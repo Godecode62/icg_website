@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À Propos - International Consulting Guinea</title>
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Section Hero About -->
+    <section class="about-hero" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                url('{% static 'images/home2.png' %}') no-repeat center center/cover;">
+        <div class="hero-overlay">
+            <h1>NOTRE <span class="orange-text">AMBITION</span></h1>
+            <p>La nouvelle référence du conseil stratégique en Guinée et en Afrique de l'Ouest</p>
+        </div>
+    </section>
+
+    <!-- Section Notre ADN -->
+    <section class="dna-section">
+        <div class="container">
+            <h2 class="section-title">NOTRE <span class="orange-text">ADN</span></h2>
+            <p class="section-subtitle">Ce qui fait la singularité d'International Consulting Guinea</p>
+            
+            <div class="dna-grid">
+                <div class="dna-card">
+                    <div class="dna-icon orange-bg">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Approche Agile</h3>
+                    <p>Nous combinons méthodologies éprouvées et flexibilité pour s'adapter à chaque client.</p>
+                </div>
+                
+                <div class="dna-card">
+                    <div class="dna-icon orange-bg">
+                        <i class="fas fa-globe-africa"></i>
+                    </div>
+                    <h3>Expertise Locale</h3>
+                    <p>Une connaissance approfondie des marchés ouest-africains et de leurs spécificités.</p>
+                </div>
+                
+                <div class="dna-card">
+                    <div class="dna-icon orange-bg">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Innovation Continue</h3>
+                    <p>Nous intégrons les dernières avancées technologiques dans nos solutions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Notre Approche -->
+    <section class="approach-section dark-bg">
+        <div class="container">
+            <div class="approach-grid">
+                <div class="approach-content">
+                    <h2 class="section-title white-text">NOTRE <span class="orange-text">APPROCHE</span></h2>
+                    <p>Nous réinventons le conseil en stratégie avec une méthode unique en 3 phases :</p>
+                    
+                    <div class="phase">
+                        <div class="phase-number orange-bg">1</div>
+                        <div class="phase-content">
+                            <h3 class="orange-text">Écoute Active</h3>
+                            <p>Une immersion complète pour comprendre vos enjeux spécifiques et votre écosystème.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="phase">
+                        <div class="phase-number orange-bg">2</div>
+                        <div class="phase-content">
+                            <h3 class="orange-text">Solution Sur Mesure</h3>
+                            <p>Développement de stratégies adaptées à votre contexte et objectifs.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="phase">
+                        <div class="phase-number orange-bg">3</div>
+                        <div class="phase-content">
+                            <h3 class="orange-text">Implémentation Accompagnée</h3>
+                            <p>Nous restons à vos côtés pour la mise en œuvre et les ajustements nécessaires.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="approach-image">
+                    <img src="{% static 'images/about1.png' %}" alt="Approche ICG">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Atouts -->
+    <section class="advantages-section">
+        <div class="container">
+            <h2 class="section-title">NOS <span class="orange-text">ATOUTS</span> DIFFÉRENCIANTS</h2>
+            
+            <div class="advantages-grid">
+                <div class="advantage-card">
+                    <div class="advantage-icon">
+                        <i class="fas fa-brain orange-text"></i>
+                    </div>
+                    <h3>Jeune Équipe Dynamique</h3>
+                    <p>Une combinaison rare d'experts seniors et de jeunes talents formés aux dernières méthodologies.</p>
+                </div>
+                
+                <div class="advantage-card">
+                    <div class="advantage-icon">
+                        <i class="fas fa-chart-network orange-text"></i>
+                    </div>
+                    <h3>Réseau International</h3>
+                    <p>Partenariats stratégiques avec des cabinets leaders en Europe et en Afrique.</p>
+                </div>
+                
+                <div class="advantage-card">
+                    <div class="advantage-icon">
+                        <i class="fas fa-tools orange-text"></i>
+                    </div>
+                    <h3>Boîte à Outils Exclusive</h3>
+                    <p>Des outils propriétaires développés spécifiquement pour le contexte africain.</p>
+                </div>
+                
+                <div class="advantage-card">
+                    <div class="advantage-icon">
+                        <i class="fas fa-hand-holding-heart orange-text"></i>
+                    </div>
+                    <h3>Engagement Sociétal</h3>
+                    <p>10% de nos bénéfices réinvestis dans la formation des jeunes talents locaux.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Équipe -->
+    <section class="team-section dark-bg">
+        <div class="container">
+            <h2 class="section-title white-text">L'ESPRIT <span class="orange-text">ICG</span></h2>
+            <p class="section-subtitle">Notre culture d'entreprise en 3 piliers</p>
+            
+            <div class="culture-grid">
+                <div class="culture-card">
+                    <div class="culture-icon orange-bg">
+                        <i class="fas fa-people-arrows"></i>
+                    </div>
+                    <h3>Collaboration</h3>
+                    <p>Nous croyons à la force du collectif et à l'intelligence collaborative.</p>
+                </div>
+                
+                <div class="culture-card">
+                    <div class="culture-icon orange-bg">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Croissance</h3>
+                    <p>Un environnement stimulant où chacun peut développer son potentiel.</p>
+                </div>
+                
+                <div class="culture-card">
+                    <div class="culture-icon orange-bg">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3>Excellence</h3>
+                    <p>La quête permanente du meilleur pour nos clients et pour nous-mêmes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contact & Informations -->
+<section class="contact-info-section dark-bg">
+    <div class="container">
+        <h2 class="section-title white-text">NOUS <span class="orange-text">TROUVER</span></h2>
+        
+        <div class="contact-grid">
+            <!-- Carte de localisation -->
+            <!-- Section Localisation -->
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1013324.052225144!2d-13.8343534!3d9.9455879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf0a16a6e0a7c387%3A0xb48eae9a55f2a5e7!2sConakry%2C%20Guin%C3%A9e!5e0!3m2!1sfr!2sfr!4v1620000000000!5m2!1sfr!2sfr" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy"
+                    title="Carte de Conakry, Guinée">
+                </iframe>
+            </div>
+            
+            <!-- Informations de contact -->
+            <div class="info-container">
+                <div class="info-card">
+                    <div class="info-icon orange-bg">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3 class="orange-text">Adresse</h3>
+                        <p>Rue KA 028, Immeuble Le Général<br>
+                        Kaloum, Conakry<br>
+                        République de Guinée</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon orange-bg">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3 class="orange-text">Téléphone</h3>
+                        <p>+224 621 00 00 00<br>
+                        +224 622 00 00 00</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon orange-bg">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3 class="orange-text">Email</h3>
+                        <p>contact@icg.com<br>
+                        info@icg.com</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon orange-bg">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3 class="orange-text">Horaires</h3>
+                        <p>Lundi - Vendredi : 8h - 18h<br>
+                        Samedi : 9h - 13h<br>
+                        Dimanche : Fermé</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="social-links">
+            <a href="#" class="social-icon"><i class="fab fa-linkedin-in orange-text"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter orange-text"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f orange-text"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram orange-text"></i></a>
+        </div>
+    </div>
+</section>
+
+    <!-- Section CTA -->
+    <section class="about-cta">
+        <div class="container">
+            <h2>Prêt à écrire le futur avec nous ?</h2>
+            <p>Rejoignez l'aventure ICG dès aujourd'hui</p>
+            <div class="cta-buttons">
+                <a href="{% url 'contact' %}" class="cta-button orange-bg">Devenir Client</a>
+                <a href="#careers" class="cta-button outline-button">Nous Rejoindre</a>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'js/about.js' %}"></script>
+</body>
+</html>
+{% endblock %}

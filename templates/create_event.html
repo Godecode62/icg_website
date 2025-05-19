@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="create-event-section">
+    <div class="create-event-container">
+        <h2 class="section-title">Créer un <span>Événement</span></h2>
+        
+        <form method="post" enctype="multipart/form-data" class="event-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="event_name">Nom de l'événement</label>
+                <input type="text" id="event_name" name="event_name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="event_title">Titre de l'événement</label>
+                <input type="text" id="event_title" name="event_title" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="event_date">Date</label>
+                    <input type="date" id="event_date" name="event_date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="event_start_hours">Heure de début</label>
+                    <input type="time" id="event_start_hours" name="event_start_hours" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="event_end_hours">Heure de fin</label>
+                    <input type="time" id="event_end_hours" name="event_end_hours" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="event_address">Adresse</label>
+                <input type="text" id="event_address" name="event_address" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="event_description">Description</label>
+                <textarea id="event_description" name="event_description" rows="5" required></textarea>
+            </div>
+            
+            <div class="form-group file-upload">
+                <label for="event_picture">Image de l'événement</label>
+                <input type="file" id="event_picture" name="event_picture" accept="image/*" required>
+                <div class="file-preview" id="filePreview"></div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="submit-button">Publier l'événement</button>
+                <button type="reset" class="cancel-button">Annuler</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<link rel="stylesheet" href="{% static 'css/create_event.css' %}">
+<script src="{% static 'js/create_event.js' %}"></script>
+{% endblock %}
