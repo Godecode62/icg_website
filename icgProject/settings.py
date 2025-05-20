@@ -30,7 +30,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["icguinea.com", 'www.icguinea.com','icg-6bg2.onrender.com']
 
-SECURE_SSL_REDIRECTS = True
+
 import os
 
 
@@ -160,4 +160,22 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 
 
+
+
+
+
+
+
+# Redirections HTTPS (Django)
+SECURE_SSL_REDIRECT = True  # Force HTTP → HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Nécessaire pour Render
+
+# Protection contre les attaques
+SECURE_HSTS_SECONDS = 30_000_000  # Active HSTS (protection contre les downgrades HTTPS)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Protège tous les sous-domaines
+SECURE_HSTS_PRELOAD = True  # Prévient le chargement en HTTP (via liste de préload Google)
+
+# Bloque les cookies non-HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
