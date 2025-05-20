@@ -167,8 +167,8 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 
 # Redirections HTTPS (Django)
-SECURE_SSL_REDIRECT = True  # Force HTTP → HTTPS
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Nécessaire pour Render
+SECURE_SSL_REDIRECT = False
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Protection contre les attaques
 SECURE_HSTS_SECONDS = 30_000_000  # Active HSTS (protection contre les downgrades HTTPS)
