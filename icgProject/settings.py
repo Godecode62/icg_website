@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["icguinea.com", 'www.icguinea.com','icg-6bg2.onrender.com']
+ALLOWED_HOSTS = [""]
 
 
 import os
@@ -50,7 +50,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'icgProject.middleware.RedirectToWWW',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -59,7 +58,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 ROOT_URLCONF = 'icgProject.urls'
 
@@ -160,22 +158,4 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 
 
-
-
-
-
-
-
-# Redirections HTTPS (Django)
-SECURE_SSL_REDIRECT = False
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Protection contre les attaques
-SECURE_HSTS_SECONDS = 30_000_000  # Active HSTS (protection contre les downgrades HTTPS)
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Protège tous les sous-domaines
-SECURE_HSTS_PRELOAD = True  # Prévient le chargement en HTTP (via liste de préload Google)
-
-# Bloque les cookies non-HTTPS
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
 
