@@ -7,7 +7,7 @@ class RedirectToWWW:
     def __call__(self, request):
         host = request.get_host().split(':')[0]
         
-        if host in ["icguinea.com", "icg-6bg2.onrender.com"]:
+        if host == "icguinea.com":
             return HttpResponsePermanentRedirect(f"https://www.icguinea.com{request.get_full_path()}")
         
         return self.get_response(request)
