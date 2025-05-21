@@ -13,32 +13,25 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from decouple import config
 import dj_database_url
+import os # Assurez-vous que 'os' est importé
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Définition des chemins du projet
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+# Paramètres de développement rapide - ne conviennent pas pour la production
+# Voir https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-
+# AVERTISSEMENT DE SÉCURITÉ : gardez la clé secrète utilisée en production secrète !
 SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# AVERTISSEMENT DE SÉCURITÉ : ne pas activer le mode débogage en production !
+DEBUG = False # Mettez à True pour le développement local
 
 ALLOWED_HOSTS = ["icguinea.com",'www.icguinea.com','icg-6bg2.onrender.com']
 
 
-import os
-
-
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Application definition
-
+# Définition des applications
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages', # <--- Assurez-vous que 'storages' est ici pour qu'S3 fonctionne
     'appli'
 ]
 
@@ -62,19 +56,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'icgProject.urls'
 
-
+# --- Configuration des fichiers statiques (laissé tel quel, supposé géré) ---
 STATIC_URL = '/static/'
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
+# --- Fin de la configuration des fichiers statiques ---
 
 TEMPLATES = [
     {
@@ -95,38 +84,37 @@ TEMPLATES = [
 WSGI_APPLICATION = 'icgProject.wsgi.application'
 
 
-# Database
+# Base de données
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
 DATABASES = {
     'default': dj_database_url.parse(config('DATABASE_URL'))
 }
 
-#AWS
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'icg-burcket'
-AWS_S3_SIGNATURE_VERSION = 's3v4'
-AWS_S3_REGION_NAME = 'eu-north-1'
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-AWS_S3_VERIFY = True
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# --- Configuration AWS S3 & Fichiers Médias ---
+# Configuration AWS S3
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')  # Doit être défini dans les variables d'environnement de Render
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')  # Doit être défini dans les variables d'environnement de Render
+AWS_STORAGE_BUCKET_NAME = 'icg-burcket'  # Nom exact du bucket (vérifiez dans AWS S3)
+AWS_S3_REGION_NAME = 'eu-north-1'  # Région du bucket
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'  # URL de base pour les fichiers
+AWS_S3_FILE_OVERWRITE = False  # Empêche l'écrasement des fichiers existants
+AWS_DEFAULT_ACL = 'public-read'  # Rendre les fichiers accessibles publiquement
+AWS_S3_VERIFY = True  # Vérifie le certificat SSL
+
+if DEBUG:
+    # Paramètres de développement pour les fichiers médias (stockage local)
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media' # Les fichiers seront stockés dans le dossier 'media' de votre projet
+else:
+    # Paramètres de production pour les fichiers médias (AWS S3)
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+# --- Fin de la configuration AWS S3 & Fichiers Médias ---
 
 
-
-
-# Password validation
+# Validation du mot de passe
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -143,30 +131,20 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
+# Internationalisation
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'fr-fr'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
-# Default primary key field type
+# Type de champ de clé primaire par défaut
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
+# --- Paramètres de sécurité ---
 # Protection CSRF renforcée
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Strict'
@@ -176,8 +154,7 @@ CSRF_FAILURE_VIEW = 'appli.views.csrf_failure'
 SESSION_COOKIE_AGE = 3600  # 1 heure
 SESSION_SAVE_EVERY_REQUEST = True
 
-
-# Force HTTPS (Render fournit SSL, mais cette option redirige HTTP -> HTTPS)
+# Forcer HTTPS (Render fournit le SSL, mais cette option redirige HTTP -> HTTPS)
 SECURE_SSL_REDIRECT = True
 
 # Protège les cookies CSRF et de session (nécessite HTTPS)
@@ -187,4 +164,4 @@ SESSION_COOKIE_SECURE = True
 # Protection contre les attaques XSS/Clickjacking
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
-
+# --- Fin des paramètres de sécurité ---
