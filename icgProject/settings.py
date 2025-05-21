@@ -125,7 +125,7 @@ AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazo
 
 # Paramètres supplémentaires pour S3
 AWS_S3_FILE_OVERWRITE = False # Ne pas écraser les fichiers avec le même nom par défaut
-AWS_DEFAULT_ACL = 'public-read' # Rend les fichiers lisibles publiquement.
+AWS_DEFAULT_ACL = None # Rend les fichiers lisibles publiquement.
                                 # Nécessite que les ACLs soient activées sur votre bucket S3.
                                 # Si vous ne voulez pas d'ACLs et utilisez des politiques de bucket, mettez None.
 
