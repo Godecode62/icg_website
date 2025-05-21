@@ -112,9 +112,7 @@ DATABASES = {
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 
-# CORRECTION CRUCIALE : Pas d'espace avant le nom du bucket, et assurez-vous que le nom est EXACT.
-# J'ai mis 'icg-bucket' comme vous l'aviez mentionné avant, si c'est 'icg-burcket', corrigez.
-AWS_STORAGE_BUCKET_NAME = 'icg-bucket'
+AWS_STORAGE_BUCKET_NAME = 'icg-burcket'
 
 AWS_S3_REGION_NAME = 'eu-north-1'
 
