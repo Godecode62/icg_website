@@ -24,11 +24,6 @@ pythonenv*
 venv.bak/
 env.bak/
 
-# Dossiers Django
-/media/
-/staticfiles/
-/static/
-/uploads/
 
 # Fichiers sensibles
 secrets.py

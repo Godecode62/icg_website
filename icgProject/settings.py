@@ -164,5 +164,15 @@ SESSION_COOKIE_AGE = 3600  # 1 heure
 SESSION_SAVE_EVERY_REQUEST = True
 
 
+# Force HTTPS (Render fournit SSL, mais cette option redirige HTTP -> HTTPS)
+SECURE_SSL_REDIRECT = True
+
+# Protège les cookies CSRF et de session (nécessite HTTPS)
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Protection contre les attaques XSS/Clickjacking
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
 
 
