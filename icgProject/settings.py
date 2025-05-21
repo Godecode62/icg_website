@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # AVERTISSEMENT DE SÉCURITÉ : ne pas activer le mode débogage en production !
-DEBUG = False # Mettez à True pour le développement local
+DEBUG = True
 
 ALLOWED_HOSTS = ["icguinea.com",'www.icguinea.com','icg-6bg2.onrender.com']
 
