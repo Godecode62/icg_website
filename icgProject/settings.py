@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["icguinea.com",'www.icguinea.com',]
+ALLOWED_HOSTS = ["icguinea.com",'www.icguinea.com','icg-6bg2.onrender.com']
 
 
 import os
