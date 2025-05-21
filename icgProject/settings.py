@@ -62,6 +62,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # --- Fin de la configuration des fichiers statiques ---
 
@@ -92,26 +97,15 @@ DATABASES = {
 
 # --- Configuration AWS S3 & Fichiers Médias ---
 # Configuration AWS S3
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')  # Doit être défini dans les variables d'environnement de Render
-AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')  # Doit être défini dans les variables d'environnement de Render
-AWS_STORAGE_BUCKET_NAME = 'icg-burcket'  # Nom exact du bucket (vérifiez dans AWS S3)
-AWS_S3_REGION_NAME = 'eu-north-1'  # Région du bucket
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'  # URL de base pour les fichiers
-AWS_S3_FILE_OVERWRITE = False  # Empêche l'écrasement des fichiers existants
-AWS_DEFAULT_ACL = 'public-read'  # Rendre les fichiers accessibles publiquement
-AWS_S3_VERIFY = True  # Vérifie le certificat SSL
-
-if DEBUG:
-    # Paramètres de développement pour les fichiers médias (stockage local)
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media' # Les fichiers seront stockés dans le dossier 'media' de votre projet
-else:
-    # Paramètres de production pour les fichiers médias (AWS S3)
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-# --- Fin de la configuration AWS S3 & Fichiers Médias ---
-
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = '	icg-burcket'
+AWS_S3_SIGNATURE_NAME = 's3v4'
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_VERIFY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Validation du mot de passe
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
