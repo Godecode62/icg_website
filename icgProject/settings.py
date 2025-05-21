@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # AVERTISSEMENT DE SÉCURITÉ : ne pas activer le mode débogage en production !
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["icguinea.com",'www.icguinea.com','icg-6bg2.onrender.com']
 
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages', # <--- Assurez-vous que 'storages' est ici pour qu'S3 fonctionne
+    'storages',
     'appli'
 ]
 
@@ -56,7 +56,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'icgProject.urls'
 
-# --- Configuration des fichiers statiques (laissé tel quel, supposé géré) ---
+# --- Configuration des fichiers statiques-----
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
