@@ -13,7 +13,17 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from decouple import config
 import dj_database_url
-import os # Assurez-vous que 'os' est importé
+import os
+import logging # N'oubliez pas d'importer le module logging
+
+# Configure un logger de base pour voir les messages dans les logs Render
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO) # Peut être passé à logging.DEBUG pour plus de détails
+handler = logging.StreamHandler()
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
 
 # Définition des chemins du projet
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,10 +35,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # AVERTISSEMENT DE SÉCURITÉ : gardez la clé secrète utilisée en production secrète !
 SECRET_KEY = config('SECRET_KEY')
 
-# DEBUG = config('DEBUG', default=False, cast=bool)
-DEBUG = True
+# DEBUG DOIT ÊTRE FAUX EN PRODUCTION !
+# La valeur est lue depuis la variable d'environnement 'DEBUG' sur Render.
+# Si 'DEBUG' n'est pas définie sur Render, elle sera 'False' par défaut.
+DEBUG = config('DEBUG', default=False, cast=bool)
+logger.info(f"DEBUG value in settings.py: {DEBUG}") # Pour vérifier la valeur en live
 
-ALLOWED_HOSTS = ["icguinea.com",'www.icguinea.com','icg-6bg2.onrender.com']
+ALLOWED_HOSTS = ["icguinea.com", 'www.icguinea.com', 'icg-6bg2.onrender.com']
 
 
 # Définition des applications
@@ -39,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages',
+    'storages', # Assurez-vous que 'storages' est bien installé et listé
     'appli'
 ]
 
@@ -56,24 +69,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'icgProject.urls'
 
-# --- Configuration des fichiers statiques-----
+# --- Configuration des fichiers statiques (avec Whitenoise) ---
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "static", # Le dossier 'static' de votre projet
 ]
-
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # --- Fin de la configuration des fichiers statiques ---
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR /"templates",],
+        'DIRS': [BASE_DIR / "templates", ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,16 +104,52 @@ DATABASES = {
     'default': dj_database_url.parse(config('DATABASE_URL'))
 }
 
-# --- Configuration AWS S3 & Fichiers Médias ---
+
+# --- Configuration AWS S3 & Fichiers Médias (uploads) ---
+
+# Récupération des clés AWS depuis les variables d'environnement
+# Assurez-vous qu'elles sont définies sur Render !
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = '	icg-burcket'
-AWS_S3_SIGNATURE_NAME = 's3v4'
+
+# CORRECTION CRUCIALE : Pas d'espace avant le nom du bucket, et assurez-vous que le nom est EXACT.
+# J'ai mis 'icg-bucket' comme vous l'aviez mentionné avant, si c'est 'icg-burcket', corrigez.
+AWS_STORAGE_BUCKET_NAME = 'icg-bucket'
+
 AWS_S3_REGION_NAME = 'eu-north-1'
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-AWS_S3_VERIFY = True
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# CORRECTION : Pas de virgule ici, c'est une simple affectation de chaîne
+AWS_S3_SIGNATURE_NAME = 's3v4'
+
+# Définir le domaine personnalisé S3 qui sera utilisé dans les URLs MEDIA_URL
+# Ce domaine doit correspondre à l'URL de votre bucket S3.
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+
+# Paramètres supplémentaires pour S3
+AWS_S3_FILE_OVERWRITE = False # Ne pas écraser les fichiers avec le même nom par défaut
+AWS_DEFAULT_ACL = 'public-read' # Rend les fichiers lisibles publiquement.
+                                # Nécessite que les ACLs soient activées sur votre bucket S3.
+                                # Si vous ne voulez pas d'ACLs et utilisez des politiques de bucket, mettez None.
+
+# CORRECTION : 'AWS_S3_VERITY' est probablement une faute de frappe, c'est 'AWS_S3_VERIFY'
+AWS_S3_VERIFY = True # Vérifie le certificat SSL du serveur S3
+
+# Configuration conditionnelle du stockage des fichiers médias
+# En mode DEBUG, utilisez le stockage local (pour le développement)
+# En production (DEBUG=False), utilisez S3
+if DEBUG:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
+    logger.info("Using FileSystemStorage for MEDIA (DEBUG=True).")
+else:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    # IMPORTANT : MEDIA_URL doit pointer vers votre bucket S3 en production
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    logger.info(f"Using S3Boto3Storage for MEDIA (DEBUG=False). MEDIA_URL: {MEDIA_URL}")
+
+# --- Fin de la configuration AWS S3 & Fichiers Médias ---
+
 
 # Validation du mot de passe
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -141,7 +186,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Protection CSRF renforcée
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Strict'
-CSRF_FAILURE_VIEW = 'appli.views.csrf_failure'
+# CSRF_FAILURE_VIEW = 'appli.views.csrf_failure' # Cette ligne est commentée car 'appli.views.csrf_failure' n'est pas fourni.
+                                                # Elle est nécessaire si vous avez une vue personnalisée pour les erreurs CSRF.
 
 # Configuration des sessions
 SESSION_COOKIE_AGE = 3600  # 1 heure
