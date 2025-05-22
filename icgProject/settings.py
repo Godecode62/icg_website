@@ -11,13 +11,32 @@ import os
 import logging
 from django.core.exceptions import ImproperlyConfigured
 
-# Initialisation du logger
+# --- NOUVELLES IMPORTATIONS POUR LE DÉBOGAGE BOTO3 ---
+import boto3
+import botocore # Importez botocore pour configurer son logger
+# --- FIN NOUVELLES IMPORTATIONS ---
+
+# Initialisation du logger principal de votre application
 logger = logging.getLogger(__name__)
+# Le niveau de log du logger principal est défini ici.
+# Si DEBUG est True, le niveau sera DEBUG. Sinon, INFO.
 logger.setLevel(logging.DEBUG if config('DEBUG', default=False, cast=bool) else logging.INFO)
 handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
+
+# --- CONFIGURATION DES LOGS DÉTAILLÉS POUR BOTO3/BOTOCore ---
+# Ces lignes sont cruciales pour voir les interactions avec AWS S3
+botocore_logger = logging.getLogger('botocore')
+botocore_logger.setLevel(logging.DEBUG) # Force le niveau DEBUG pour botocore
+botocore_logger.addHandler(handler) # Attache le même handler pour que les logs apparaissent
+
+boto3_logger = logging.getLogger('boto3')
+boto3_logger.setLevel(logging.DEBUG) # Force le niveau DEBUG pour boto3
+boto3_logger.addHandler(handler) # Attache le même handler pour que les logs apparaissent
+# --- FIN CONFIGURATION LOGS DÉTAILLÉS ---
+
 
 # Chemin de base
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,8 +51,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 logger.info(f"Mode DEBUG: {DEBUG}")
 
 ALLOWED_HOSTS = [
-    "icguinea.com", 
-    'www.icguinea.com', 
+    "icguinea.com",
+    'www.icguinea.com',
     'icg-6bg2.onrender.com',
     '127.0.0.1' if DEBUG else None,
     'localhost' if DEBUG else None
@@ -116,18 +135,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # AWS S3 Configuration
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'bucketicg'
+AWS_STORAGE_BUCKET_NAME = 'bucketicg' # Assurez-vous que c'est le nom exact de votre bucket
 AWS_S3_REGION_NAME = 'eu-north-1'
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
     'ContentDisposition': 'inline'
 }
-AWS_DEFAULT_ACL = None
+AWS_DEFAULT_ACL = None # C'est la bonne valeur pour gérer les permissions via la politique de bucket
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False
 AWS_S3_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100MB
-AWS_S3_VERIFY = True
+AWS_S3_VERIFY = True # Gardez à True, sauf si vous avez des problèmes SSL spécifiques
 
 # Configuration médias
 if DEBUG:
@@ -140,16 +159,22 @@ else:
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
     logger.info(f"Utilisation de S3 pour les médias: {MEDIA_URL}")
 
-    # Vérification S3 en production
+    # Cette vérification de connexion à S3 est bonne pour le démarrage,
+    # mais les logs détaillés de botocore/boto3 ci-dessus sont plus importants
+    # pour le diagnostic des uploads qui échouent silencieusement.
     try:
-        import boto3
-        s3 = boto3.client('s3',
+        # Cette partie est exécutée au démarrage de l'application
+        # et peut aider à diagnostiquer des problèmes d'authentification initiaux.
+        s3_client_test = boto3.client('s3',
                          aws_access_key_id=AWS_ACCESS_KEY_ID,
                          aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                          region_name=AWS_S3_REGION_NAME)
-        s3.list_buckets()
+        s3_client_test.list_buckets()
+        logger.info("Connexion initiale à S3 réussie.")
     except Exception as e:
-        logger.error(f"Erreur de connexion à S3: {str(e)}")
+        logger.error(f"Erreur de connexion initiale à S3: {str(e)}")
+        # Si vous voulez que l'application ne démarre pas si S3 n'est pas accessible
+        # en production, vous pouvez laisser le 'raise'.
         if not DEBUG:
             raise
 
