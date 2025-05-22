@@ -28,6 +28,7 @@ logger.addHandler(handler)
 
 # --- CONFIGURATION DES LOGS DÉTAILLÉS POUR BOTO3/BOTOCore ---
 # Ces lignes sont cruciales pour voir les interactions avec AWS S3
+# Elles forcent les loggers de botocore et boto3 à afficher tous les messages de débogage.
 botocore_logger = logging.getLogger('botocore')
 botocore_logger.setLevel(logging.DEBUG) # Force le niveau DEBUG pour botocore
 botocore_logger.addHandler(handler) # Attache le même handler pour que les logs apparaissent
@@ -67,7 +68,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages',
+    'storages', # Assurez-vous que 'storages' est installé et listé
     'appli'
 ]
 
@@ -126,29 +127,37 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Fichiers statiques
+# Fichiers statiques (gérés par Whitenoise en production)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# AWS S3 Configuration
+# AWS S3 Configuration pour les médias
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'bucketicg' # Assurez-vous que c'est le nom exact de votre bucket
+AWS_STORAGE_BUCKET_NAME = 'bucketicg' # Assurez-vous que c'est le nom exact de votre bucket S3
 AWS_S3_REGION_NAME = 'eu-north-1'
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-    'ContentDisposition': 'inline'
-}
-AWS_DEFAULT_ACL = None # C'est la bonne valeur pour gérer les permissions via la politique de bucket
-AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE = False
-AWS_S3_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100MB
-AWS_S3_VERIFY = True # Gardez à True, sauf si vous avez des problèmes SSL spécifiques
 
-# Configuration médias
+# --- MODIFICATION CLÉ : Laissez django-storages gérer le domaine et l'URL ---
+# AWS_S3_CUSTOM_DOMAIN n'est plus nécessaire ici, django-storages le construit.
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com' # Ligne commentée/supprimée
+
+# Définit le préfixe de chemin pour les fichiers médias dans votre bucket S3
+AWS_LOCATION = 'media' # Les fichiers seront stockés dans bucketicg/media/
+# --- FIN MODIFICATION CLÉ ---
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400', # Cache pour 24 heures
+    'ContentDisposition': 'inline' # Pour afficher les images directement dans le navigateur
+}
+AWS_DEFAULT_ACL = None # C'est la bonne valeur pour gérer les permissions via la politique de bucket S3
+AWS_QUERYSTRING_AUTH = False # Ne pas ajouter de paramètres d'authentification aux URLs générées (pour accès public)
+AWS_S3_FILE_OVERWRITE = False # Ne pas écraser les fichiers avec le même nom
+AWS_S3_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # Taille max en mémoire avant de passer par un fichier temporaire (100MB)
+AWS_S3_VERIFY = True # Vérifie le certificat SSL du serveur S3 (gardez à True)
+
+# Configuration du stockage des fichiers médias (conditionnel DEBUG)
 if DEBUG:
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     MEDIA_URL = '/media/'
@@ -156,15 +165,14 @@ if DEBUG:
     logger.info("Utilisation du stockage local pour les médias (DEBUG=True)")
 else:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-    logger.info(f"Utilisation de S3 pour les médias: {MEDIA_URL}")
+    # MEDIA_URL n'est plus définie explicitement ici.
+    # django-storages la construira automatiquement en utilisant AWS_STORAGE_BUCKET_NAME,
+    # AWS_S3_REGION_NAME et AWS_LOCATION.
+    # L'URL ressemblera à https://bucketicg.s3.eu-north-1.amazonaws.com/media/
+    logger.info(f"Utilisation de S3 pour les médias. Le chemin de base sera: https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/")
 
-    # Cette vérification de connexion à S3 est bonne pour le démarrage,
-    # mais les logs détaillés de botocore/boto3 ci-dessus sont plus importants
-    # pour le diagnostic des uploads qui échouent silencieusement.
+    # Vérification de connexion initiale à S3 au démarrage de l'application
     try:
-        # Cette partie est exécutée au démarrage de l'application
-        # et peut aider à diagnostiquer des problèmes d'authentification initiaux.
         s3_client_test = boto3.client('s3',
                          aws_access_key_id=AWS_ACCESS_KEY_ID,
                          aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
@@ -173,8 +181,7 @@ else:
         logger.info("Connexion initiale à S3 réussie.")
     except Exception as e:
         logger.error(f"Erreur de connexion initiale à S3: {str(e)}")
-        # Si vous voulez que l'application ne démarre pas si S3 n'est pas accessible
-        # en production, vous pouvez laisser le 'raise'.
+        # Si l'application est en production, elle ne doit pas démarrer si S3 n'est pas accessible
         if not DEBUG:
             raise
 
