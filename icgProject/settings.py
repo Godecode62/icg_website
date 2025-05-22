@@ -8,59 +8,28 @@ from pathlib import Path
 from decouple import config
 import dj_database_url
 import os
-import logging
 from django.core.exceptions import ImproperlyConfigured
 
-# --- NOUVELLES IMPORTATIONS POUR LE DÉBOGAGE BOTO3 ---
-import boto3
-import botocore # Importez botocore pour configurer son logger
-# --- FIN NOUVELLES IMPORTATIONS ---
-
-# Initialisation du logger principal de votre application
-logger = logging.getLogger(__name__)
-# Le niveau de log du logger principal est défini ici.
-# Si DEBUG est True, le niveau sera DEBUG. Sinon, INFO.
-logger.setLevel(logging.DEBUG if config('DEBUG', default=False, cast=bool) else logging.INFO)
-handler = logging.StreamHandler()
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-
-# --- CONFIGURATION DES LOGS DÉTAILLÉS POUR BOTO3/BOTOCore ---
-# Ces lignes sont cruciales pour voir les interactions avec AWS S3
-# Elles forcent les loggers de botocore et boto3 à afficher tous les messages de débogage.
-botocore_logger = logging.getLogger('botocore')
-botocore_logger.setLevel(logging.DEBUG) # Force le niveau DEBUG pour botocore
-botocore_logger.addHandler(handler) # Attache le même handler pour que les logs apparaissent
-
-boto3_logger = logging.getLogger('boto3')
-boto3_logger.setLevel(logging.DEBUG) # Force le niveau DEBUG pour boto3
-boto3_logger.addHandler(handler) # Attache le même handler pour que les logs apparaissent
-# --- FIN CONFIGURATION LOGS DÉTAILLÉS ---
-
-
-# Chemin de base
+# Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Sécurité
+# --- Security settings ---
 SECRET_KEY = config('SECRET_KEY')
 if not SECRET_KEY or len(SECRET_KEY) < 20:
-    logger.error('SECRET_KEY invalide!')
-    raise ImproperlyConfigured('SECRET_KEY non configurée ou trop courte')
+    raise ImproperlyConfigured('SECRET_KEY not configured or too short in .env')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
-logger.info(f"Mode DEBUG: {DEBUG}")
 
 ALLOWED_HOSTS = [
     "icguinea.com",
     'www.icguinea.com',
     'icg-6bg2.onrender.com',
-    '127.0.0.1' if DEBUG else None,
-    'localhost' if DEBUG else None
 ]
-ALLOWED_HOSTS = [h for h in ALLOWED_HOSTS if h is not None]
+# Add localhost and 127.0.0.1 only in DEBUG mode
+if DEBUG:
+    ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
 
-# Applications
+# Installed applications
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -68,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages', # Assurez-vous que 'storages' est installé et listé
-    'appli'
+    'storages', # Required for S3Boto3Storage
+    'appli',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +54,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'icgProject.urls'
 
-# Templates
+# Templates configuration
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -104,7 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'icgProject.wsgi.application'
 
-# Base de données
+# Database configuration
 DATABASES = {
     'default': dj_database_url.parse(
         config('DATABASE_URL'),
@@ -113,7 +82,7 @@ DATABASES = {
     )
 }
 
-# Validation mot de passe
+# Password validators
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -121,75 +90,58 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalisation
+# Internationalization
 LANGUAGE_CODE = 'fr-fr'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Fichiers statiques (gérés par Whitenoise en production)
+# --- Static files (managed by Whitenoise in production) ---
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# AWS S3 Configuration pour les médias
+# --- Cloudflare R2 Configuration for media files ---
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'bucketicg' # Assurez-vous que c'est le nom exact de votre bucket S3
-AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_STORAGE_BUCKET_NAME = 'icg'
+CLOUDFLARE_ACCOUNT_ID = '1a9d11fc9d6f55875e100f1e11f03eca'
+# R2 Endpoint (uses the Cloudflare Account ID)
+AWS_S3_ENDPOINT_URL = f"https://{CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com"
+AWS_S3_REGION_NAME = None # R2 does not use traditional AWS regions
 
-# --- MODIFICATION CLÉ : Laissez django-storages gérer le domaine et l'URL ---
-# AWS_S3_CUSTOM_DOMAIN n'est plus nécessaire ici, django-storages le construit.
-# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com' # Ligne commentée/supprimée
+# Path prefix for media files within your R2 bucket
+AWS_LOCATION = 'media' # Files will be stored in icg/media/
 
-# Définit le préfixe de chemin pour les fichiers médias dans votre bucket S3
-AWS_LOCATION = 'media' # Les fichiers seront stockés dans bucketicg/media/
-# --- FIN MODIFICATION CLÉ ---
-
+# S3 object parameters (for caching, etc.)
 AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400', # Cache pour 24 heures
-    'ContentDisposition': 'inline' # Pour afficher les images directement dans le navigateur
+    'CacheControl': 'max-age=86400', # Cache for 24 hours
+    'ContentDisposition': 'inline', # To display images directly in the browser
 }
-AWS_DEFAULT_ACL = None # C'est la bonne valeur pour gérer les permissions via la politique de bucket S3
-AWS_QUERYSTRING_AUTH = False # Ne pas ajouter de paramètres d'authentification aux URLs générées (pour accès public)
-AWS_S3_FILE_OVERWRITE = False # Ne pas écraser les fichiers avec le même nom
-AWS_S3_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # Taille max en mémoire avant de passer par un fichier temporaire (100MB)
-AWS_S3_VERIFY = True # Vérifie le certificat SSL du serveur S3 (gardez à True)
+AWS_DEFAULT_ACL = None # Manage permissions via R2 bucket policy
+AWS_QUERYSTRING_AUTH = False # Do not add authentication parameters to generated URLs (for public access)
+AWS_S3_FILE_OVERWRITE = False # Do not overwrite files with the same name
+AWS_S3_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # Max memory size before using a temporary file (100MB)
+AWS_S3_VERIFY = True # Verify SSL certificate of the S3 server (keep True)
 
-# Configuration du stockage des fichiers médias (conditionnel DEBUG)
+# Media file storage configuration (conditional on DEBUG)
 if DEBUG:
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
-    logger.info("Utilisation du stockage local pour les médias (DEBUG=True)")
 else:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    # MEDIA_URL n'est plus définie explicitement ici.
-    # django-storages la construira automatiquement en utilisant AWS_STORAGE_BUCKET_NAME,
-    # AWS_S3_REGION_NAME et AWS_LOCATION.
-    # L'URL ressemblera à https://bucketicg.s3.eu-north-1.amazonaws.com/media/
-    logger.info(f"Utilisation de S3 pour les médias. Le chemin de base sera: https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/")
+    # MEDIA_URL will be automatically constructed by django-storages
+    # It will look like https://<ACCOUNT_ID>.r2.cloudflarestorage.com/icg/media/
+    MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/"
 
-    # Vérification de connexion initiale à S3 au démarrage de l'application
-    try:
-        s3_client_test = boto3.client('s3',
-                         aws_access_key_id=AWS_ACCESS_KEY_ID,
-                         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                         region_name=AWS_S3_REGION_NAME)
-        s3_client_test.list_buckets()
-        logger.info("Connexion initiale à S3 réussie.")
-    except Exception as e:
-        logger.error(f"Erreur de connexion initiale à S3: {str(e)}")
-        # Si l'application est en production, elle ne doit pas démarrer si S3 n'est pas accessible
-        if not DEBUG:
-            raise
 
-# Sécurité supplémentaire
+# Additional security settings
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SAMESITE = 'Strict'
-SESSION_COOKIE_AGE = 3600 * 24  # 1 jour
+CSRF_COOKIE_SAMESITE = 'Lax' # 'Strict' can cause issues with certain embeds or redirects
+SESSION_COOKIE_AGE = 3600 * 24  # 1 day
 SESSION_SAVE_EVERY_REQUEST = True
 SECURE_SSL_REDIRECT = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
