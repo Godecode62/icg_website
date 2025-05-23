@@ -10,13 +10,15 @@ SECRET_KEY = config('SECRET_KEY')
 if not SECRET_KEY or len(SECRET_KEY) < 20:
     raise ImproperlyConfigured('SECRET_KEY not configured or too short in .env')
 
-DEBUG = True
+DEBUG = config('DBUG', bool)
 
 ALLOWED_HOSTS = [
     "icguinea.com",
     'www.icguinea.com',
     'icg-6bg2.onrender.com',
 ]
+if DEBUG:
+    ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -52,7 +54,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.messages',
             ],
         },
     },
@@ -83,24 +85,26 @@ USE_TZ = True
 CLOUDFLARE_R2_BUCKET = config('CLOUDFLARE_R2_BUCKET')
 CLOUDFLARE_R2_ACCESS_KEY = config('CLOUDFLARE_R2_ACCESS_KEY')
 CLOUDFLARE_R2_SECRET_KEY = config('CLOUDFLARE_R2_SECRET_KEY')
-CLOUDFLARE_R2_BUCKET_ENDPOINT = config('CLOUDFLARE_R2_BUCKET_ENDPOINT')
 
-_R2_ENDPOINT_URL = CLOUDFLARE_R2_BUCKET_ENDPOINT
-if not _R2_ENDPOINT_URL.endswith('/'):
-    _R2_ENDPOINT_URL += '/'
+CLOUDFLARE_R2_API_ENDPOINT = config('CLOUDFLARE_R2_API_ENDPOINT')
+CLOUDFLARE_R2_PUBLIC_URL = config('CLOUDFLARE_R2_PUBLIC_URL')
 
-STATIC_URL = f"{_R2_ENDPOINT_URL}{CLOUDFLARE_R2_BUCKET}/static/"
+_R2_PUBLIC_URL_BASE = CLOUDFLARE_R2_PUBLIC_URL
+if not _R2_PUBLIC_URL_BASE.endswith('/'):
+    _R2_PUBLIC_URL_BASE += '/'
+
+STATIC_URL = f"{_R2_PUBLIC_URL_BASE}{CLOUDFLARE_R2_BUCKET}/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
-MEDIA_URL = f"{_R2_ENDPOINT_URL}{CLOUDFLARE_R2_BUCKET}/media/"
+MEDIA_URL = f"{_R2_PUBLIC_URL_BASE}{CLOUDFLARE_R2_BUCKET}/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CLOUDFLARE_R2_CONFIG_OPTIONS = {
     'bucket_name': CLOUDFLARE_R2_BUCKET,
     'access_key': CLOUDFLARE_R2_ACCESS_KEY,
     'secret_key': CLOUDFLARE_R2_SECRET_KEY,
-    'endpoint_url': CLOUDFLARE_R2_BUCKET_ENDPOINT,
+    'endpoint_url': CLOUDFLARE_R2_API_ENDPOINT,
     'default_acl': 'public-read',
     'file_overwrite': False,
     'signature_version': 's3v4',
@@ -121,7 +125,6 @@ STORAGES = {
 
 DEFAULT_FILE_STORAGE = 'helpers.cloudflare.storages.MediaFileStorage'
 STATICFILES_STORAGE = 'helpers.cloudflare.storages.StaticFileStorage'
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_COOKIE_HTTPONLY = True
