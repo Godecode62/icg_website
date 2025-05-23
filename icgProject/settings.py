@@ -89,20 +89,16 @@ CLOUDFLARE_R2_SECRET_KEY = config('CLOUDFLARE_R2_SECRET_KEY')
 CLOUDFLARE_R2_API_ENDPOINT = config('CLOUDFLARE_R2_API_ENDPOINT')
 CLOUDFLARE_R2_PUBLIC_URL = config('CLOUDFLARE_R2_PUBLIC_URL')
 
-# --- CONFIGURATION FICHIERS STATIQUES (WHITENOISE) ---
+AWS_S3_CUSTOM_DOMAIN = CLOUDFLARE_R2_PUBLIC_URL.replace('https://', '')
+AWS_S3_URL_PROTOCOL = 'https:'
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
-# --- CONFIGURATION FICHIERS MEDIAS (CLOUDFLARE R2) ---
-_R2_MEDIA_PUBLIC_URL_BASE = CLOUDFLARE_R2_PUBLIC_URL
-if not _R2_MEDIA_PUBLIC_URL_BASE.endswith('/'):
-    _R2_MEDIA_PUBLIC_URL_BASE += '/'
-
-MEDIA_URL = f"{_R2_MEDIA_PUBLIC_URL_BASE}{CLOUDFLARE_R2_BUCKET}/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Local path for media files, not used by R2 storage
+MEDIA_URL = f"{AWS_S3_URL_PROTOCOL}//{AWS_S3_CUSTOM_DOMAIN}/{CLOUDFLARE_R2_BUCKET}/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CLOUDFLARE_R2_CONFIG_OPTIONS = {
     'bucket_name': CLOUDFLARE_R2_BUCKET,
@@ -117,19 +113,16 @@ CLOUDFLARE_R2_CONFIG_OPTIONS = {
 }
 
 STORAGES = {
-    'default': { # Pour les fichiers médias (uploads utilisateurs)
+    'default': {
         'BACKEND': 'helpers.cloudflare.storages.MediaFileStorage',
         'OPTIONS': CLOUDFLARE_R2_CONFIG_OPTIONS,
     },
-    
-    'staticfiles': { # Ceci est pour les fichiers statiques (gérés par Whitenoise)
+    'staticfiles': {
         'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
     },
 }
 
 DEFAULT_FILE_STORAGE = 'helpers.cloudflare.storages.MediaFileStorage'
-# STATICFILES_STORAGE est défini plus haut pour Whitenoise
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_COOKIE_HTTPONLY = True
