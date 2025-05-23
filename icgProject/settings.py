@@ -10,15 +10,13 @@ SECRET_KEY = config('SECRET_KEY')
 if not SECRET_KEY or len(SECRET_KEY) < 20:
     raise ImproperlyConfigured('SECRET_KEY not configured or too short in .env')
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "icguinea.com",
     'www.icguinea.com',
     'icg-6bg2.onrender.com',
 ]
-if DEBUG:
-    ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -82,23 +80,28 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-#Fichiers statics géré par r2
-STATIC_URL = '/static/' 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-# STATICFILES_STORAGE sera défini via STORAGES['staticfiles']['BACKEND']
-
 CLOUDFLARE_R2_BUCKET = config('CLOUDFLARE_R2_BUCKET')
 CLOUDFLARE_R2_ACCESS_KEY = config('CLOUDFLARE_R2_ACCESS_KEY')
 CLOUDFLARE_R2_SECRET_KEY = config('CLOUDFLARE_R2_SECRET_KEY')
 CLOUDFLARE_R2_BUCKET_ENDPOINT = config('CLOUDFLARE_R2_BUCKET_ENDPOINT')
+
+_R2_ENDPOINT_URL = CLOUDFLARE_R2_BUCKET_ENDPOINT
+if not _R2_ENDPOINT_URL.endswith('/'):
+    _R2_ENDPOINT_URL += '/'
+
+STATIC_URL = f"{_R2_ENDPOINT_URL}{CLOUDFLARE_R2_BUCKET}/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+MEDIA_URL = f"{_R2_ENDPOINT_URL}{CLOUDFLARE_R2_BUCKET}/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CLOUDFLARE_R2_CONFIG_OPTIONS = {
     'bucket_name': CLOUDFLARE_R2_BUCKET,
     'access_key': CLOUDFLARE_R2_ACCESS_KEY,
     'secret_key': CLOUDFLARE_R2_SECRET_KEY,
     'endpoint_url': CLOUDFLARE_R2_BUCKET_ENDPOINT,
-    'default_acl': 'public-read', 
+    'default_acl': 'public-read',
     'file_overwrite': False,
     'signature_version': 's3v4',
     'querystring_auth': False,
@@ -106,27 +109,27 @@ CLOUDFLARE_R2_CONFIG_OPTIONS = {
 }
 
 STORAGES = {
-    'default': { # Pour les fichiers médias (uploads utilisateurs)
+    'default': {
         'BACKEND': 'helpers.cloudflare.storages.MediaFileStorage',
         'OPTIONS': CLOUDFLARE_R2_CONFIG_OPTIONS,
     },
-    'staticfiles': { # Pour les fichiers statiques
+    'staticfiles': {
         'BACKEND': 'helpers.cloudflare.storages.StaticFileStorage',
         'OPTIONS': CLOUDFLARE_R2_CONFIG_OPTIONS,
     }
 }
 
 DEFAULT_FILE_STORAGE = 'helpers.cloudflare.storages.MediaFileStorage'
+STATICFILES_STORAGE = 'helpers.cloudflare.storages.StaticFileStorage'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_AGE = 3600 * 24
 SESSION_SAVE_EVERY_REQUEST = True
-SECURE_SSL_REDIRECT = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
