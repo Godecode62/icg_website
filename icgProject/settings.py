@@ -1,29 +1,25 @@
-"""
-Django settings for icgProject project.
-"""
-
 from pathlib import Path
 from decouple import config
 import dj_database_url
 import os
 from django.core.exceptions import ImproperlyConfigured
 
-# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# --- Security ---
-SECRET_KEY = config('SECRET_KEY')  # Doit rester via config()
-DEBUG = False  # On force la prod par défaut
+SECRET_KEY = config('SECRET_KEY')
+if not SECRET_KEY or len(SECRET_KEY) < 20:
+    raise ImproperlyConfigured('SECRET_KEY not configured or too short in .env')
+
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = [
     "icguinea.com",
-    'www.icguinea.com', 
+    'www.icguinea.com',
     'icg-6bg2.onrender.com',
-    '127.0.0.1',
-    'localhost'
 ]
+if DEBUG:
+    ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
 
-# Applications
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -31,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages',  # Nécessaire pour R2
+    'storages',
     'appli',
 ]
 
@@ -66,16 +62,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'icgProject.wsgi.application'
 
-# Database
 DATABASES = {
     'default': dj_database_url.parse(
-        config('DATABASE_URL'),  # Doit rester via config()
+        config('DATABASE_URL'),
         conn_max_age=600,
         conn_health_checks=True
     )
 }
 
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -83,31 +77,56 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
 LANGUAGE_CODE = 'fr-fr'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
-STATIC_URL = '/static/'
+#Fichiers statics géré par r2
+STATIC_URL = '/static/' 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [BASE_DIR / "static"]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+# STATICFILES_STORAGE sera défini via STORAGES['staticfiles']['BACKEND']
 
-# --- Cloudflare R2 Config (variables critiques via config()) ---
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')  # Sensible
-AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')  # Sensible
-AWS_STORAGE_BUCKET_NAME = 'icg'  # Peut rester en dur
-AWS_S3_ENDPOINT_URL = 'https://1a9d11fc9d6f55875e100f1e11f03eca.r2.cloudflarestorage.com'  # Votre endpoint
-AWS_S3_REGION_NAME = 'auto'  # Valeur standard pour R2
+CLOUDFLARE_R2_BUCKET = config('CLOUDFLARE_R2_BUCKET')
+CLOUDFLARE_R2_ACCESS_KEY = config('CLOUDFLARE_R2_ACCESS_KEY')
+CLOUDFLARE_R2_SECRET_KEY = config('CLOUDFLARE_R2_SECRET_KEY')
+CLOUDFLARE_R2_BUCKET_ENDPOINT = config('CLOUDFLARE_R2_BUCKET_ENDPOINT')
 
-# Media config
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/media/"
+CLOUDFLARE_R2_CONFIG_OPTIONS = {
+    'bucket_name': CLOUDFLARE_R2_BUCKET,
+    'access_key': CLOUDFLARE_R2_ACCESS_KEY,
+    'secret_key': CLOUDFLARE_R2_SECRET_KEY,
+    'endpoint_url': CLOUDFLARE_R2_BUCKET_ENDPOINT,
+    'default_acl': 'public-read', 
+    'file_overwrite': False,
+    'signature_version': 's3v4',
+    'querystring_auth': False,
+    'region_name': None,
+}
 
-# Security
+STORAGES = {
+    'default': { # Pour les fichiers médias (uploads utilisateurs)
+        'BACKEND': 'helpers.cloudflare.storages.MediaFileStorage',
+        'OPTIONS': CLOUDFLARE_R2_CONFIG_OPTIONS,
+    },
+    'staticfiles': { # Pour les fichiers statiques
+        'BACKEND': 'helpers.cloudflare.storages.StaticFileStorage',
+        'OPTIONS': CLOUDFLARE_R2_CONFIG_OPTIONS,
+    }
+}
+
+DEFAULT_FILE_STORAGE = 'helpers.cloudflare.storages.MediaFileStorage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_AGE = 3600 * 24
+SESSION_SAVE_EVERY_REQUEST = True
+SECURE_SSL_REDIRECT = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
