@@ -10,7 +10,7 @@ SECRET_KEY = config('SECRET_KEY')
 if not SECRET_KEY or len(SECRET_KEY) < 20:
     raise ImproperlyConfigured('SECRET_KEY not configured or too short in .env')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "icguinea.com",
