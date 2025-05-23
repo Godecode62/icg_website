@@ -14,8 +14,7 @@
             {% if request.user.is_authenticated and request.user.is_superuser %}
                 <a href="{% url 'contact_list' %}" class="nav-link">Gerer Les Messages</a>
                 <a href="{% url 'event_list' %}" class="nav-link">Gerer Les Evenements</a>
-                <a href="{% url 'logout' %}" class="nav-link">Deonnexion</a>
-            
+                <a href="{% url 'logout' %}" class="nav-link">Deconnexion</a>
             {% else %}
                 <a href="{% url 'login' %}" class="nav-link">Connexion</a>
             {% endif %}
@@ -34,12 +33,11 @@
         <a href="{% url 'show_entreprise' %}" class="mobile-nav-link">Accueil</a>
         <a href="{% url 'about' %}" class="mobile-nav-link">À propos</a>
         <a href="{% url 'contact' %}" class="mobile-nav-link">Contact</a>
-        <a href="{% url 'event_list' %}" class="mobile-nav-link">Evenèments</a>
+        <a href="{% url 'event_list' %}" class="mobile-nav-link">Evenements</a>
         {% if request.user.is_authenticated and request.user.is_superuser %}
             <a href="{% url 'contact_list' %}" class="mobile-nav-link">Gerer Les Messages</a>
             <a href="{% url 'event_list' %}" class="mobile-nav-link">Gerer Les Evenements</a>
-            <a href="{% url 'logout' %}" class="mobile-nav-link">Deonnexion</a>
-        
+            <a href="{% url 'logout' %}" class="mobile-nav-link">Deconnexion</a>
         {% else %}
             <a href="{% url 'login' %}" class="mobile-nav-link">Connexion</a>
         {% endif %}
@@ -47,7 +45,6 @@
 </nav>
 
 <style>
-    /* STYLES SPECIFIQUES POUR LE MENU SCROLLABLE */
     .navbar-links {
         max-height: 80vh;
         overflow-y: auto;
@@ -63,5 +60,25 @@
             max-height: none;
             overflow-y: visible;
         }
+    }
+
+    .navbar-logo .logo-img {
+        max-height: 80px; /* Taille pour écrans larges */
+        width: auto;
+        height: auto;
+        display: block;
+    }
+
+    @media (max-width: 767px) {
+        .navbar-logo .logo-img {
+            max-height: 60px; /* Taille pour mobiles */
+        }
+    }
+
+    .navbar-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
     }
 </style>
