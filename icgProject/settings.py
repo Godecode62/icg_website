@@ -121,7 +121,10 @@ STORAGES = {
         'BACKEND': 'helpers.cloudflare.storages.MediaFileStorage',
         'OPTIONS': CLOUDFLARE_R2_CONFIG_OPTIONS,
     },
-    # 'staticfiles' est géré directement par STATICFILES_STORAGE pour Whitenoise
+    
+    'staticfiles': { # Ceci est pour les fichiers statiques (gérés par Whitenoise)
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
 }
 
 DEFAULT_FILE_STORAGE = 'helpers.cloudflare.storages.MediaFileStorage'
