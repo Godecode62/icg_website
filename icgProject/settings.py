@@ -89,16 +89,20 @@ CLOUDFLARE_R2_SECRET_KEY = config('CLOUDFLARE_R2_SECRET_KEY')
 CLOUDFLARE_R2_API_ENDPOINT = config('CLOUDFLARE_R2_API_ENDPOINT')
 CLOUDFLARE_R2_PUBLIC_URL = config('CLOUDFLARE_R2_PUBLIC_URL')
 
-_R2_PUBLIC_URL_BASE = CLOUDFLARE_R2_PUBLIC_URL
-if not _R2_PUBLIC_URL_BASE.endswith('/'):
-    _R2_PUBLIC_URL_BASE += '/'
-
-STATIC_URL = f"{_R2_PUBLIC_URL_BASE}{CLOUDFLARE_R2_BUCKET}/static/"
+# --- CONFIGURATION FICHIERS STATIQUES (WHITENOISE) ---
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_URL = f"{_R2_PUBLIC_URL_BASE}{CLOUDFLARE_R2_BUCKET}/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# --- CONFIGURATION FICHIERS MEDIAS (CLOUDFLARE R2) ---
+_R2_MEDIA_PUBLIC_URL_BASE = CLOUDFLARE_R2_PUBLIC_URL
+if not _R2_MEDIA_PUBLIC_URL_BASE.endswith('/'):
+    _R2_MEDIA_PUBLIC_URL_BASE += '/'
+
+MEDIA_URL = f"{_R2_MEDIA_PUBLIC_URL_BASE}{CLOUDFLARE_R2_BUCKET}/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Local path for media files, not used by R2 storage
 
 CLOUDFLARE_R2_CONFIG_OPTIONS = {
     'bucket_name': CLOUDFLARE_R2_BUCKET,
@@ -113,18 +117,16 @@ CLOUDFLARE_R2_CONFIG_OPTIONS = {
 }
 
 STORAGES = {
-    'default': {
+    'default': { # Pour les fichiers médias (uploads utilisateurs)
         'BACKEND': 'helpers.cloudflare.storages.MediaFileStorage',
         'OPTIONS': CLOUDFLARE_R2_CONFIG_OPTIONS,
     },
-    'staticfiles': {
-        'BACKEND': 'helpers.cloudflare.storages.StaticFileStorage',
-        'OPTIONS': CLOUDFLARE_R2_CONFIG_OPTIONS,
-    }
+    # 'staticfiles' est géré directement par STATICFILES_STORAGE pour Whitenoise
 }
 
 DEFAULT_FILE_STORAGE = 'helpers.cloudflare.storages.MediaFileStorage'
-STATICFILES_STORAGE = 'helpers.cloudflare.storages.StaticFileStorage'
+# STATICFILES_STORAGE est défini plus haut pour Whitenoise
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_COOKIE_HTTPONLY = True
