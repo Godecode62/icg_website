@@ -66,9 +66,9 @@
         color: var(--text-primary);
         font-size: 1rem;
         /* Propriétés pour forcer le retour à la ligne des textes longs */
+        **width: 100%;** /*  S'assure que l'élément prend 100% de la largeur de son parent */
         **word-break: break-all;** /* Casse les mots longs n'importe où */
         **overflow-wrap: break-word;** /* Assure que le contenu ne déborde pas du conteneur */
-        **min-width: 0;** /* Très important dans les contextes de grille/flexbox pour permettre le wrap */
     }
 
     .contact-message {
