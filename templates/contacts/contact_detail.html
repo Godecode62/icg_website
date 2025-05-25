@@ -40,12 +40,29 @@
         font-weight: 500;
     }
 
-    .contact-meta {
+    .contact-info-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        /* Par défaut pour les petits écrans (mobile-first) */
+        grid-template-columns: 1fr;
         gap: 1.5rem;
         margin-bottom: 2rem;
     }
+
+    /* Styles pour les écrans larges (Desktop) */
+    @media (min-width: 769px) { 
+        .contact-info-grid {
+            /* Deux lignes : 
+               - la première avec téléphone/date sur 2 colonnes
+               - la deuxième avec l'email sur 1 colonne (prend toute la largeur)
+            */
+            grid-template-columns: repeat(2, 1fr); /* Téléphone et Date sur 2 colonnes */
+            grid-template-rows: auto auto; /* Deux lignes automatiques */
+        }
+        .meta-email-card {
+            grid-column: 1 / -1; /* L'email prend toute la largeur de la grille */
+        }
+    }
+
 
     .meta-card {
         background: rgba(255, 107, 0, 0.1);
@@ -65,10 +82,10 @@
     .meta-content {
         color: var(--text-primary);
         font-size: 1rem;
-        /* Propriétés pour forcer le retour à la ligne des textes longs */
-        **width: 100%;** /*  S'assure que l'élément prend 100% de la largeur de son parent */
-        **word-break: break-all;** /* Casse les mots longs n'importe où */
-        **overflow-wrap: break-word;** /* Assure que le contenu ne déborde pas du conteneur */
+        /* Assure que le texte se coupe */
+        word-break: break-all;
+        overflow-wrap: break-word;
+        width: 100%; /* S'assure que l'élément remplit son conteneur */
     }
 
     .contact-message {
@@ -133,10 +150,6 @@
         .contact-detail-container {
             padding: 1.5rem;
         }
-
-        .contact-meta {
-            grid-template-columns: 1fr;
-        }
     }
 </style>
 {% endblock %}
@@ -148,11 +161,7 @@
         <p class="contact-subject">{{ contact.contact_subject }}</p>
     </div>
 
-    <div class="contact-meta">
-        <div class="meta-card">
-            <div class="meta-title">Email</div>
-            <div class="meta-content">{{ contact.contact_email }}</div>
-        </div>
+    <div class="contact-info-grid"> 
 
         {% if contact.contact_phone_number %}
         <div class="meta-card">
@@ -165,6 +174,12 @@
             <div class="meta-title">Date d'envoi</div>
             <div class="meta-content">{{ contact.received_at|date:"d M Y H:i" }}</div>
         </div>
+
+        <div class="meta-card meta-email-card"> 
+            <div class="meta-title">Email</div>
+            <div class="meta-content">{{ contact.contact_email }}</div>
+        </div>
+
     </div>
 
     <div class="contact-message">
