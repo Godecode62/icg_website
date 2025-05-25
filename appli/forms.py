@@ -42,7 +42,9 @@ class EventForm(forms.ModelForm):
             'event_description': forms.Textarea(attrs={'class': 'hse-input', 'rows': 5, 'placeholder': 'Décrivez l\'événement en détail...'}),
             'event_picture': forms.ClearableFileInput(attrs={'class': 'hse-input-file'}), # Pour l'upload de fichier
         }
-
+        
+        
+        #Là on met un label pour tous les champs
         # Labels personnalisés (optionnel, mais bonne pratique)
         labels = {
             'event_name': 'Intitulé',
