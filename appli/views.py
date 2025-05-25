@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -32,19 +33,42 @@ class EventListView(ListView):
     paginate_by = 10
 
 # Vue Création (réservée aux utilisateurs connectés)
+
 class EventCreateView(AdminRequiredMixin, CreateView):
     model = Events
     template_name = 'events/event_form.html'
-    fields = '__all__'
+    
+    fields = ['event_name', 'event_address', 'event_description', 'event_picture'] 
+    
     success_url = reverse_lazy('event_list')
 
     def form_valid(self, form):
+
+        event_instance = form.save(commit=False)
+        
+        event_date_str = self.request.POST.get('event_date')
+        if event_date_str:
+            try:
+                # Convertit la chaîne de caractères en objet date Python
+                event_instance.event_date = datetime.datetime.strptime(event_date_str, '%Y-%m-%d').date()
+            except ValueError:
+                # Gère l'erreur si le format de date n'est pas bon
+                form.add_error('event_date', 'Format de date invalide (attendu AAAA-MM-JJ).')
+                return self.form_invalid(form)
+        else:
+            # Gère le cas où la date est manquante (si 'required' est dans le modèle)
+            form.add_error('event_date', 'Ce champ est obligatoire.')
+            return self.form_invalid(form)
+
+        event_instance.save() # Sauvegarde l'instance avec la date maintenant
         messages.success(self.request, "Événement créé avec succès!")
-        return super().form_valid(form)
+        return redirect(self.success_url)
 
     def get_login_url(self):
         messages.warning(self.request, "Vous devez être connecté pour créer un événement")
         return super().get_login_url()
+
+
 
 # Vue Détail (publique)
 class EventDetailView(DetailView):
