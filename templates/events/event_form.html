@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+{# Assure-toi que 'humanize' est bien dans INSTALLED_APPS si tu n'as pas déjà Django template tags {% now %} sans cela #}
+{% load humanize %} 
 
 {% block extra_head %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -8,7 +10,6 @@
 
 {% block content %}
 <div class="hse-form-container">
-    <!-- Hero Section -->
     <div class="hse-hero" style="background-image: url('{% static 'images/event-default.jpg' %}');">
         <div class="hse-hero-content">
             <h1>Création d'Événement <span class="hse-orange">RH/RSE/HSE</span></h1>
@@ -16,12 +17,10 @@
         </div>
     </div>
 
-    <!-- Formulaire -->
     <div class="hse-form-wrapper">
         <form method="post" enctype="multipart/form-data" class="hse-event-form">
             {% csrf_token %}
             
-            <!-- Section 1 : Identification -->
             <div class="hse-form-section">
                 <h2><i class="fas fa-id-card hse-icon"></i> Identification</h2>
                 
@@ -29,7 +28,7 @@
                     <label for="id_event_name">
                         <i class="fas fa-tag hse-icon"></i> Intitulé <span class="hse-orange">*</span>
                     </label>
-                    {{ form.event_name }}
+                    {{ form.event_name }} {# <-- Rendu par Django #}
                     <p class="hse-field-hint">Ex: "Atelier RSE: Diversité & Inclusion"</p>
                 </div>
 
@@ -38,24 +37,19 @@
                         <label for="id_event_date">
                             <i class="fas fa-calendar-day hse-icon"></i> Date <span class="hse-orange">*</span>
                         </label>
-                        <input type="date" 
-                               id="id_event_date" 
-                               name="event_date" 
-                               required
-                               class="hse-input"
-                               min="{% now 'Y-m-d' %}">
+                        {# Django rendra l'input, le JS ajoutera type="date" et min="" #}
+                        {{ form.event_date }} 
                     </div>
                     
                     <div class="hse-form-group hse-half">
                         <label for="id_event_address">
                             <i class="fas fa-map-marker-alt hse-icon"></i> Lieu <span class="hse-orange">*</span>
                         </label>
-                        {{ form.event_address }}
+                        {{ form.event_address }} {# <-- Rendu par Django #}
                     </div>
                 </div>
             </div>
 
-            <!-- Section 2 : Contenu -->
             <div class="hse-form-section">
                 <h2><i class="fas fa-clipboard-check hse-icon"></i> Contenu</h2>
                 
@@ -63,7 +57,7 @@
                     <label for="id_event_description">
                         <i class="fas fa-file-alt hse-icon"></i> Description <span class="hse-orange">*</span>
                     </label>
-                    {{ form.event_description }}
+                    {{ form.event_description }} {# <-- Rendu par Django #}
                     <div class="hse-char-counter"><span id="hse-char-count">0</span>/1500 caractères</div>
                     
                     <div class="hse-content-guide">
@@ -77,7 +71,6 @@
                 </div>
             </div>
 
-            <!-- Section 3 : Visuel -->
             <div class="hse-form-section">
                 <h2><i class="fas fa-image hse-icon"></i> Visuel</h2>
                 
@@ -89,13 +82,12 @@
                         <span class="hse-upload-btn">
                             <i class="fas fa-cloud-upload-alt"></i> Sélectionner une image
                         </span>
-                        {{ form.event_picture }}
+                        {{ form.event_picture }} {# <-- Rendu par Django #}
                         <span class="hse-file-info">PNG/JPG - Max 2MB</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Validation -->
             <div class="hse-form-actions">
                 <button type="submit" class="hse-submit-btn">
                     <i class="fas fa-check-circle"></i> Valider
@@ -107,7 +99,6 @@
         </form>
     </div>
 
-    <!-- Domaines d'expertise -->
     <div class="hse-domains">
         <div class="hse-domain">
             <i class="fas fa-users"></i>
@@ -126,5 +117,6 @@
 {% endblock %}
 
 {% block extra_js %}
+{# Le JavaScript pour la logique du formulaire #}
 <script src="{% static 'js/events.js' %}"></script>
 {% endblock %}
