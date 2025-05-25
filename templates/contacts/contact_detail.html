@@ -12,107 +12,133 @@
         --text-secondary: #b0b0b0;
     }
 
-    .contact-detail-container {
-        max-width: 800px;
-        margin: 2rem auto;
+    .contacts-container {
         padding: 2rem;
-        background: var(--card-bg);
-        border-radius: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        border-left: 4px solid var(--accent-color);
+        max-width: 1400px;
+        margin: 0 auto;
+        background: var(--primary-bg);
+        min-height: 100vh;
     }
 
-    .contact-header {
-        border-bottom: 1px solid var(--accent-color);
-        padding-bottom: 1rem;
+    .contacts-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--accent-color);
     }
 
-    .contact-title {
+    .contacts-header h1 {
         color: var(--accent-color);
         font-size: 2rem;
+    }
+
+    .contacts-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .contact-card {
+        background: var(--card-bg);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        border-left: 4みをpx solid var(--accent-color);
+    }
+
+    .contact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(255, 107, 0, 0.2);
+    }
+
+    .contact-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--accent-color);
         margin-bottom: 0.5rem;
     }
 
     .contact-subject {
+        font-size: 1rem;
         color: var(--text-primary);
-        font-size: 1.2rem;
+        margin-bottom: 1rem;
         font-weight: 500;
     }
 
     .contact-meta {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
 
-    .meta-card {
-        background: rgba(255, 107, 0, 0.1);
-        padding: 1rem;
-        border-radius: 8px;
-        border-left: 2px solid var(--accent-color);
-    }
-
-    .meta-title {
-        color: var(--accent-color);
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+    .contact-meta-item {
+        display: flex;
+        align-items: center;
         margin-bottom: 0.5rem;
+        color: var(--text-secondary);
     }
 
-    .meta-content {
-        color: var(--text-primary);
-        font-size: 1rem;
+    .contact-meta-item i {
+        color: var(--accent-color);
+        margin-right: 0.5rem;
+        width: 20px;
+        text-align: center;
+    }
+
+    /* RÈGLES CSS POUR LE REDIMENSIONNEMENT DE L'EMAIL */
+    .contact-meta-item span {
+        word-break: break-word; /* Permet aux mots de se couper et de revenir à la ligne */
+        overflow-wrap: break-word; /* Casse les mots longs pour éviter le dépassement */
+        min-width: 0; /* Essentiel dans les flexbox pour que word-break fonctionne */
+        flex-grow: 1; /* Permet à l'élément de prendre l'espace disponible */
+    }
+
+    .contact-meta-item .email-address {
+        word-break: break-all; /* Casse même au milieu d'un mot si nécessaire pour l'email */
     }
 
     .contact-message {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin-top: 2rem;
-        line-height: 1.6;
-    }
-
-    .message-label {
-        color: var(--accent-color);
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
-        display: block;
-        font-weight: 500;
-    }
-
-    .message-content {
+        background: rgba(255, 107, 0, 0.1);
+        padding: 1rem;
+        border-radius: 5px;
+        margin-top: 1rem;
         color: var(--text-primary);
-        white-space: pre-line;
+        border-left: 2px solid var(--accent-color);
+    }
+
+    .empty-contacts {
+        text-align: center;
+        padding: 3rem;
+        grid-column: 1 / -1;
+        color: var(--text-secondary);
     }
 
     .contact-actions {
         display: flex;
+        gap: 10px;
+        margin-top: 1.5rem;
         justify-content: flex-end;
-        gap: 1rem;
-        margin-top: 2rem;
     }
 
     .btn {
-        padding: 0.6rem 1.2rem;
+        padding: 0.5rem 1rem;
         border-radius: 5px;
         font-weight: 500;
         transition: all 0.3s;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 5px;
     }
 
-    .btn-back {
-        background: rgba(255, 255, 255, 0.1);
-        color: var(--text-primary);
-        border: 1px solid var(--text-secondary);
+    .btn-view {
+        background: rgba(255, 107, 0, 0.2);
+        color: var(--accent-color);
+        border: 1px solid var(--accent-color);
     }
 
-    .btn-back:hover {
-        background: rgba(255, 255, 255, 0.2);
+    .btn-view:hover {
+        background: rgba(255, 107, 0, 0.3);
     }
 
     .btn-delete {
@@ -125,12 +151,8 @@
         background: rgba(220, 53, 69, 0.3);
     }
 
-    @media (max-width: 768px) {
-        .contact-detail-container {
-            padding: 1.5rem;
-        }
-        
-        .contact-meta {
+    @media (max-width: 1024px) {
+        .contacts-grid {
             grid-template-columns: 1fr;
         }
     }
@@ -138,46 +160,56 @@
 {% endblock %}
 
 {% block content %}
-<div class="contact-detail-container">
-    <div class="contact-header">
-        <h1 class="contact-title">{{ contact.contact_name }}</h1>
-        <p class="contact-subject">{{ contact.contact_subject }}</p>
+<div class="contacts-container">
+    <div class="contacts-header">
+        <h1>Messages reçus</h1>
     </div>
 
-    <div class="contact-meta">
-        <div class="meta-card">
-            <div class="meta-title">Email</div>
-            <div class="meta-content">{{ contact.contact_email }}</div>
+    <div class="contacts-grid">
+        {% for contact in contacts %}
+        <div class="contact-card">
+            <h3 class="contact-name">{{ contact.contact_name }}</h3>
+            <p class="contact-subject">{{ contact.contact_subject }}</p>
+
+            <div class="contact-meta">
+                <div class="contact-meta-item">
+                    <i class="fas fa-envelope"></i>
+                    {# Ajout de la classe 'email-address' ici #}
+                    <span class="email-address">{{ contact.contact_email }}</span>
+                </div>
+                {% if contact.contact_phone_number %}
+                <div class="contact-meta-item">
+                    <i class="fas fa-phone"></i>
+                    <span>{{ contact.contact_phone_number }}</span>
+                </div>
+                {% endif %}
+                {# AFFICHAGE DE LA DATE DE RÉCEPTION #}
+                <div class="contact-meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Reçu le: {{ contact.received_at|date:"d M Y H:i" }}</span> {# Exemple de format: 25 Mai 2025 16:00 #}
+                </div>
+            </div>
+
+            <div class="contact-message">
+                <p>{{ contact.contact_message|truncatewords:30 }}</p>
+            </div>
+
+            {% if request.user.is_superuser %}
+            <div class="contact-actions">
+                <a href="{% url 'contact_detail' contact.id %}" class="btn btn-view">
+                    <i class="fas fa-eye"></i> Voir
+                </a>
+                <a href="{% url 'contact_delete' contact.id %}" class="btn btn-delete">
+                    <i class="fas fa-trash"></i> Supprimer
+                </a>
+            </div>
+            {% endif %}
         </div>
-        
-        {% if contact.contact_phone_number %}
-        <div class="meta-card">
-            <div class="meta-title">Téléphone</div>
-            <div class="meta-content">{{ contact.contact_phone_number }}</div>
+        {% empty %}
+        <div class="empty-contacts">
+            <p>Aucun message reçu pour le moment</p>
         </div>
-        {% endif %}
-        
-        <div class="meta-card">
-
-            <div class="meta-title">Date d'envoi</div>
-            <div class="meta-content">{{ contact.received_at|date:"d M Y H:i" }}</div>
-        </div> 
+        {% endfor %}
     </div>
-
-    <div class="contact-message">
-        <span class="message-label">Message :</span>
-        <div class="message-content">{{ contact.contact_message }}</div>
-    </div>
-
-    {% if request.user.is_superuser %}
-    <div class="contact-actions">
-        <a href="{% url 'contact_list' %}" class="btn btn-back">
-            <i class="fas fa-arrow-left"></i> Retour à la liste
-        </a>
-        <a href="{% url 'contact_delete' contact.id %}" class="btn btn-delete">
-            <i class="fas fa-trash"></i> Supprimer
-        </a>
-    </div>
-    {% endif %}
 </div>
 {% endblock %}
