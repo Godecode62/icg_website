@@ -10,8 +10,7 @@ SECRET_KEY = config('SECRET_KEY')
 if not SECRET_KEY or len(SECRET_KEY) < 20:
     raise ImproperlyConfigured('SECRET_KEY not configured or too short in .env')
 
-
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DBUG', bool)
 
 ALLOWED_HOSTS = [
     "icguinea.com",
@@ -30,7 +29,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'storages',
     'appli',
-    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

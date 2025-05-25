@@ -8,32 +8,17 @@
     --hse-orange: #FF6D00;
     --hse-orange-dark: #E65100;
     --hse-border: #3A404C;
-    --hse-green-success: #28a745; /* Ajout pour le bouton Valider */
-    --hse-green-success-dark: #218838; /* Ajout pour le bouton Valider */
 }
 
-/* Structure Générale */
-body {
-    background: var(--hse-darker);
-    color: var(--hse-text);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    line-height: 1.6;
-}
-
+/* Structure */
 .hse-form-container {
     background: var(--hse-darker);
     color: var(--hse-text);
     font-family: 'Segoe UI', system-ui, sans-serif;
     line-height: 1.6;
-    max-width: 900px; /* Taille maximale augmentée pour plus d'espace */
-    margin: 40px auto;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
-    overflow: hidden;
-    border: 1px solid var(--hse-border);
 }
 
-/* Hero Section */
+/* Hero */
 .hse-hero {
     height: 350px;
     background-size: cover;
@@ -44,37 +29,17 @@ body {
     position: relative;
 }
 
-.hse-hero::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)); /* Dégradé sombre */
-}
-
 .hse-hero-content {
-    position: relative; /* Pour être au-dessus du pseudo-élément ::before */
-    z-index: 1;
     background: rgba(26, 29, 36, 0.9);
     padding: 2rem 3rem;
     text-align: center;
     max-width: 800px;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Ombre pour la carte */
 }
 
 .hse-hero h1 {
-    font-size: 2.8rem; /* Taille augmentée */
+    font-size: 2.3rem;
     margin-bottom: 1rem;
-    color: white; /* Titre blanc */
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-}
-
-.hse-hero-content p {
-    font-size: 1.1rem;
-    color: var(--hse-muted);
 }
 
 .hse-orange {
@@ -82,280 +47,176 @@ body {
     font-weight: 600;
 }
 
-/* Formulaire Wrapper */
+/* Formulaire */
 .hse-form-wrapper {
     background: var(--hse-card);
-    max-width: 860px; /* S'adapte au conteneur */
-    margin: -50px auto 3rem; /* Remonte sur l'image */
-    padding: 2.5rem; /* Plus de padding */
+    max-width: 800px;
+    margin: -50px auto 3rem;
+    padding: 2rem;
     border-radius: 10px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.5); /* Ombre plus profonde */
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
     border-top: 4px solid var(--hse-orange);
-    position: relative; /* Pour que le margin-top négatif fonctionne */
-    z-index: 2; /* S'assurer qu'il est au-dessus de l'héro */
 }
 
 .hse-form-section {
-    margin-bottom: 2.5rem; /* Plus d'espace entre les sections */
-    padding-bottom: 2.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
     border-bottom: 1px solid var(--hse-border);
 }
 
-.hse-form-section:last-of-type { /* last-of-type pour être sûr */
+.hse-form-section:last-child {
     border-bottom: none;
 }
 
 .hse-form-section h2 {
-    font-size: 1.6rem; /* Taille augmentée */
-    margin-bottom: 1.8rem; /* Plus d'espace */
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    color: var(--hse-text);
-    border-bottom: 2px solid var(--hse-orange); /* Ligne orange sous le titre */
-    padding-bottom: 10px;
 }
 
 .hse-icon {
     color: var(--hse-orange);
-    margin-right: 12px; /* Plus d'espace */
-    font-size: 1.3rem; /* Taille augmentée */
+    margin-right: 10px;
+    font-size: 1.1rem;
 }
 
-/* Groupes de Champs */
+/* Champs */
 .hse-form-group {
-    margin-bottom: 1.8rem; /* Plus d'espace */
+    margin-bottom: 1.5rem;
 }
 
 .hse-form-group label {
     display: block;
-    margin-bottom: 0.8rem; /* Plus d'espace */
+    margin-bottom: 0.6rem;
     font-weight: 500;
     display: flex;
     align-items: center;
-    color: var(--hse-text);
-    font-size: 1.05rem;
 }
 
-/* Styles des inputs et textarea (appliqués via JS avec la classe hse-input) */
-.hse-input {
+.hse-form-group input,
+.hse-form-group textarea {
     width: 100%;
-    padding: 12px 15px; /* Plus de padding */
+    padding: 10px 12px;
     background: var(--hse-dark);
     border: 1px solid var(--hse-border);
-    border-radius: 8px; /* Plus arrondi */
+    border-radius: 6px;
     color: var(--hse-text);
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-sizing: border-box; /* Important pour le padding et la bordure */
+    font-size: 0.95rem;
 }
 
-.hse-input::placeholder {
-    color: var(--hse-muted);
-    opacity: 0.7;
-}
-
-.hse-input:focus {
-    outline: none;
-    border-color: var(--hse-orange);
-    box-shadow: 0 0 0 4px rgba(255, 109, 0, 0.3); /* Ombre de focus plus prononcée */
-    background: #20232A; /* Légèrement plus clair au focus */
-}
-
-.hse-form-group textarea.hse-input {
-    min-height: 150px; /* Hauteur minimale augmentée */
+.hse-form-group textarea {
+    min-height: 120px;
     resize: vertical;
 }
 
-.hse-field-hint {
-    font-size: 0.9rem;
-    color: var(--hse-muted);
-    margin-top: 0.6rem;
-    font-style: italic;
+.hse-form-group input:focus,
+.hse-form-group textarea:focus {
+    outline: none;
+    border-color: var(--hse-orange);
+    box-shadow: 0 0 0 3px rgba(255, 109, 0, 0.2);
 }
 
-/* Ligne de formulaire (Row) */
+.hse-field-hint {
+    font-size: 0.85rem;
+    color: var(--hse-muted);
+    margin-top: 0.4rem;
+}
+
+/* Grille */
 .hse-form-row {
     display: flex;
-    gap: 2rem; /* Plus d'espace entre les colonnes */
+    gap: 1.5rem;
 }
 
 .hse-half {
     flex: 1;
 }
 
-/* Upload de Fichier */
+/* Upload */
 .hse-file-upload {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem; /* Espace entre éléments de l'upload */
-    padding: 2rem;
-    border: 2px dashed var(--hse-border); /* Bordure dashed */
-    border-radius: 10px;
-    background: var(--hse-dark);
 }
 
 .hse-preview-container {
     width: 100%;
     max-width: 500px;
-    height: 250px; /* Hauteur préview augmentée */
-    background: var(--hse-darker);
-    border: 2px solid var(--hse-border);
+    height: 200px;
+    background: var(--hse-dark);
+    border: 2px dashed var(--hse-border);
     border-radius: 8px;
     overflow: hidden;
-    display: flex; /* Pour centrer l'image */
-    justify-content: center;
-    align-items: center;
+    margin-bottom: 1rem;
 }
 
 .hse-preview-container img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* 'contain' pour ne pas couper l'image */
+    object-fit: cover;
 }
 
-.hse-upload-label {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    cursor: pointer;
-}
-
-/* Style du bouton d'upload (qui est en fait un span) */
 .hse-upload-btn {
     background: var(--hse-orange);
     color: white;
-    padding: 12px 25px; /* Plus de padding */
+    padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.95rem;
     display: inline-flex;
     align-items: center;
-    gap: 10px; /* Plus d'espace icône/texte */
-    transition: background 0.3s ease, transform 0.2s ease;
-    font-weight: 600;
-    box-shadow: 0 4px 10px rgba(255, 109, 0, 0.3);
+    gap: 8px;
 }
 
 .hse-upload-btn:hover {
     background: var(--hse-orange-dark);
-    transform: translateY(-2px);
 }
-
-/* Cache l'input file réel de Django */
-/* Nous appliquons la classe hse-input au champ file via JS */
-/* .hse-event-form input[type="file"] {
-    display: none;
-} */ /* Commenté car géré par le JS pour une meilleure flexibilité */
 
 .hse-file-info {
     display: block;
-    font-size: 0.9rem;
+    margin-top: 8px;
+    font-size: 0.85rem;
     color: var(--hse-muted);
 }
 
-/* Compteur de caractères */
-.hse-char-counter {
-    text-align: right;
-    font-size: 0.9rem;
-    color: var(--hse-muted);
-    margin-top: 0.6rem;
-}
-
-.hse-char-counter span {
-    font-weight: bold;
-    color: var(--hse-orange); /* Utilise la variable CSS */
-}
-
-/* Guide de contenu */
-.hse-content-guide {
-    background: var(--hse-dark);
-    border-left: 5px solid var(--hse-orange);
-    padding: 1.5rem;
-    margin-top: 1.5rem;
-    border-radius: 8px;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
-}
-
-.hse-content-guide p {
-    margin-top: 0;
-    font-weight: 600;
-    color: var(--hse-text);
-    font-size: 1rem;
-    margin-bottom: 0.8rem;
-}
-
-.hse-content-guide ul {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 0;
-}
-
-.hse-content-guide ul li {
-    margin-bottom: 0.5rem;
-    color: var(--hse-muted);
-    font-size: 0.95rem;
-}
-
-.hse-content-guide ul li::before {
-    content: "\2713"; /* Coche ✔ */
-    color: var(--hse-orange);
-    display: inline-block;
-    width: 1.2em;
-    margin-left: -1.2em;
-    font-weight: bold;
-}
-
-/* Actions du formulaire */
-.hse-form-actions {
-    text-align: center;
-    margin-top: 3rem;
-}
-
+/* Bouton */
 .hse-submit-btn {
-    background: var(--hse-green-success); /* Bouton vert pour l'action principale */
+    background: var(--hse-orange);
     color: white;
     border: none;
-    padding: 15px 30px; /* Plus grand */
-    font-size: 1.15rem; /* Plus grand */
-    font-weight: 600;
-    border-radius: 8px; /* Plus arrondi */
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4); /* Ombre verte */
+    gap: 8px;
+    margin-top: 1rem;
 }
 
 .hse-submit-btn:hover {
-    background: var(--hse-green-success-dark);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+    background: var(--hse-orange-dark);
 }
 
 .hse-validation-note {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--hse-muted);
-    margin-top: 1.5rem;
-    font-style: italic;
+    margin-top: 1rem;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
 }
 
-/* Domaines d'expertise */
+/* Domaines */
 .hse-domains {
     display: flex;
     justify-content: center;
-    gap: 1.5rem; /* Réduit un peu le gap pour les petits écrans */
-    padding: 2.5rem;
-    max-width: 900px;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1000px;
     margin: 0 auto;
-    background: var(--hse-dark); /* Fond plus sombre */
-    border-top: 1px solid var(--hse-border);
-    border-radius: 0 0 12px 12px; /* Coins arrondis en bas seulement */
 }
 
 .hse-domain {
@@ -364,73 +225,42 @@ body {
     padding: 1.5rem;
     border-radius: 8px;
     flex: 1;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hse-domain:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
 .hse-domain i {
-    font-size: 2.8rem; /* Icônes plus grandes */
+    font-size: 2rem;
     color: var(--hse-orange);
     margin-bottom: 1rem;
-    transition: color 0.3s ease;
-}
-
-.hse-domain:hover i {
-    color: var(--hse-orange-dark);
 }
 
 .hse-domain h3 {
     margin: 0;
-    font-size: 1.1rem;
-    color: var(--hse-text);
+    font-size: 1.2rem;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .hse-form-container {
-        margin: 20px 15px;
-    }
     .hse-hero {
-        height: 250px;
+        height: 300px;
     }
+    
     .hse-hero-content {
-        padding: 1rem;
+        padding: 1.5rem;
     }
-    .hse-hero h1 {
-        font-size: 2rem;
-    }
-    .hse-hero-content p {
-        font-size: 0.9rem;
-    }
+    
     .hse-form-wrapper {
         padding: 1.5rem;
-        margin-top: -30px; /* Moins de chevauchement */
+        margin-top: -30px;
     }
-    .hse-form-section {
-        margin-bottom: 2rem;
-        padding-bottom: 2rem;
-    }
-    .hse-form-section h2 {
-        font-size: 1.4rem;
-    }
+    
     .hse-form-row {
         flex-direction: column;
         gap: 1rem;
     }
+    
     .hse-domains {
         flex-direction: column;
         gap: 1rem;
         padding: 1.5rem;
-    }
-    .hse-domain {
-        margin-bottom: 1rem; /* Espace entre les blocs */
-    }
-    .hse-domain:last-child {
-        margin-bottom: 0;
     }
 }
