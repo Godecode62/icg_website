@@ -19,7 +19,7 @@
         background: var(--primary-bg);
         min-height: 100vh;
     }
-    
+
     .contacts-header {
         display: flex;
         justify-content: space-between;
@@ -28,18 +28,18 @@
         padding-bottom: 1rem;
         border-bottom: 1px solid var(--accent-color);
     }
-    
+
     .contacts-header h1 {
         color: var(--accent-color);
         font-size: 2rem;
     }
-    
+
     .contacts-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
-    
+
     .contact-card {
         background: var(--card-bg);
         border-radius: 10px;
@@ -48,44 +48,44 @@
         transition: all 0.3s ease;
         border-left: 4px solid var(--accent-color);
     }
-    
+
     .contact-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 6px 20px rgba(255, 107, 0, 0.2);
     }
-    
+
     .contact-name {
         font-size: 1.3rem;
         font-weight: 600;
         color: var(--accent-color);
         margin-bottom: 0.5rem;
     }
-    
+
     .contact-subject {
         font-size: 1rem;
         color: var(--text-primary);
         margin-bottom: 1rem;
         font-weight: 500;
     }
-    
+
     .contact-meta {
         margin-bottom: 1rem;
     }
-    
+
     .contact-meta-item {
         display: flex;
         align-items: center;
         margin-bottom: 0.5rem;
         color: var(--text-secondary);
     }
-    
+
     .contact-meta-item i {
         color: var(--accent-color);
         margin-right: 0.5rem;
         width: 20px;
         text-align: center;
     }
-    
+
     .contact-message {
         background: rgba(255, 107, 0, 0.1);
         padding: 1rem;
@@ -94,7 +94,7 @@
         color: var(--text-primary);
         border-left: 2px solid var(--accent-color);
     }
-    
+
     .empty-contacts {
         text-align: center;
         padding: 3rem;
@@ -152,13 +152,13 @@
     <div class="contacts-header">
         <h1>Messages reçus</h1>
     </div>
-    
+
     <div class="contacts-grid">
         {% for contact in contacts %}
         <div class="contact-card">
             <h3 class="contact-name">{{ contact.contact_name }}</h3>
             <p class="contact-subject">{{ contact.contact_subject }}</p>
-            
+
             <div class="contact-meta">
                 <div class="contact-meta-item">
                     <i class="fas fa-envelope"></i>
@@ -170,8 +170,13 @@
                     <span>{{ contact.contact_phone_number }}</span>
                 </div>
                 {% endif %}
+                {# NOUVEAU : Affichage de la date de réception #}
+                <div class="contact-meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Reçu le: {{ contact.received_at|date:"d M Y H:i" }}</span> {# Format: 25 Mai 2025 16:00 #}
+                </div>
             </div>
-            
+
             <div class="contact-message">
                 <p>{{ contact.contact_message|truncatewords:30 }}</p>
             </div>

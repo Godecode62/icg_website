@@ -12,10 +12,6 @@ from appli.views import AdminRequiredMixin
 
 
 
-
-
-
-
 class ContactCreateView(CreateView):
     """Permet à tout le monde de créer un contact"""
     model = Contacts
@@ -33,7 +29,7 @@ class ContactListView(AdminRequiredMixin, ListView):
     model = Contacts
     template_name = 'contacts/contact_list.html'
     context_object_name = 'contacts'
-    ordering = ['-id']  # Du plus récent au plus ancien
+    ordering = ['-received_at']  # Du plus récent au plus ancien
 
 class ContactDetailView(AdminRequiredMixin, DetailView):
     """Détail d'un contact - réservé aux admins"""

@@ -18,4 +18,12 @@ class Contacts(models.Model):
     contact_phone_number = PhoneNumberField(null=True,blank=True)
     contact_subject = models.CharField(max_length=50)
     contact_message = models.TextField()
+    received_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.contact_name} - {self.contact_subject}"
+
+    class Meta:
+        ordering = ['-received_at']
+
     
