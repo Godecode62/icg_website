@@ -1,18 +1,6 @@
+// events.js
 document.addEventListener('DOMContentLoaded', function() {
-    // --- Application des classes CSS aux champs non gérés par Django Forms ---
-
-    // Sélectionne les inputs text et textarea générés par Django et applique la classe 'hse-input'
-    const inputsAndTextareas = document.querySelectorAll(
-        '#id_event_name, #id_event_address, #id_event_description' // Retire #id_event_date d'ici
-    );
-    inputsAndTextareas.forEach(element => {
-        element.classList.add('hse-input');
-    });
-
-    // Le champ id_event_date a déjà la classe 'hse-input' dans le HTML, donc pas besoin de le cibler ici.
-    // Ses attributs type="date" et min="" sont aussi déjà dans le HTML.
-
-
+    
     // --- Script pour l'aperçu de l'image ---
     const fileInput = document.getElementById('id_event_picture');
     const previewImg = document.getElementById('hse-preview');
@@ -30,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 reader.readAsDataURL(this.files[0]);
             } else {
                 // Remet l'image par défaut si aucun fichier n'est sélectionné
+                // Assure-toi que le chemin est correct pour la prod (ex: via une URL absolue ou une variable JS)
                 previewImg.src = "{% static 'images/hse-default.jpg' %}"; 
             }
         });
@@ -55,18 +44,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Animation des champs (focus/blur) ---
-    // Cette partie est en grande partie gérée par le CSS via :focus.
-    // On peut la laisser pour les champs qui ont la classe hse-input.
-    document.querySelectorAll('.hse-input').forEach(input => {
-        input.addEventListener('focus', function() {
-            // Le CSS gère déjà border-color et box-shadow
-        });
-        
-        input.addEventListener('blur', function() {
-            if(!this.value) {
-                this.style.borderColor = 'var(--hse-border)';
-            }
-        });
-    });
 });

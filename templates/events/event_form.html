@@ -26,7 +26,7 @@
                     <label for="id_event_name">
                         <i class="fas fa-tag hse-icon"></i> Intitulé <span class="hse-orange">*</span>
                     </label>
-                    {{ form.event_name }}
+                    {{ form.event_name }} {# <-- Rendu par Django Form #}
                     <p class="hse-field-hint">Ex: "Atelier RSE: Diversité & Inclusion"</p>
                 </div>
 
@@ -35,20 +35,14 @@
                         <label for="id_event_date">
                             <i class="fas fa-calendar-day hse-icon"></i> Date <span class="hse-orange">*</span>
                         </label>
-                        {# Le champ date est géré manuellement ici #}
-                        <input type="date" 
-                               id="id_event_date" 
-                               name="event_date" 
-                               required
-                               class="hse-input"
-                               min="{% now 'Y-m-d' %}">
+                        {{ form.event_date }} {# <-- NOUVEAU : Rendu par Django Form (qui inclut type="date" et min) #}
                     </div>
                     
                     <div class="hse-form-group hse-half">
                         <label for="id_event_address">
                             <i class="fas fa-map-marker-alt hse-icon"></i> Lieu <span class="hse-orange">*</span>
                         </label>
-                        {{ form.event_address }}
+                        {{ form.event_address }} {# <-- Rendu par Django Form #}
                     </div>
                 </div>
             </div>
@@ -60,7 +54,7 @@
                     <label for="id_event_description">
                         <i class="fas fa-file-alt hse-icon"></i> Description <span class="hse-orange">*</span>
                     </label>
-                    {{ form.event_description }}
+                    {{ form.event_description }} {# <-- Rendu par Django Form #}
                     <div class="hse-char-counter"><span id="hse-char-count">0</span>/1500 caractères</div>
                     
                     <div class="hse-content-guide">
@@ -85,7 +79,7 @@
                         <span class="hse-upload-btn">
                             <i class="fas fa-cloud-upload-alt"></i> Sélectionner une image
                         </span>
-                        {{ form.event_picture }}
+                        {{ form.event_picture }} {# <-- Rendu par Django Form #}
                         <span class="hse-file-info">PNG/JPG - Max 2MB</span>
                     </label>
                 </div>

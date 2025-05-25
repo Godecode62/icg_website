@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date # Importe date directement
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -8,9 +8,8 @@ from django.contrib.auth.decorators import user_passes_test
 
 from django.views.decorators.csrf import requires_csrf_token
 from appli.models import Events
-
+from appli.forms import EventForm # <-- NOUVEAU : Importe ton formulaire
 from django.contrib.auth.views import LoginView, LogoutView
-
 
 
 # Mixin personnalisé pour vérifier les droits admin
@@ -19,8 +18,6 @@ class AdminRequiredMixin(UserPassesTestMixin):
         return self.request.user.is_superuser and self.request.user.is_authenticated
     
     def handle_no_permission(self):
-        from django.contrib import messages
-        from django.shortcuts import redirect
         messages.error(self.request, "Accès réservé aux administrateurs")
         return redirect('show_entreprise') 
 
@@ -33,42 +30,19 @@ class EventListView(ListView):
     paginate_by = 10
 
 # Vue Création (réservée aux utilisateurs connectés)
-
 class EventCreateView(AdminRequiredMixin, CreateView):
     model = Events
     template_name = 'events/event_form.html'
-    
-    fields = ['event_name', 'event_address', 'event_description', 'event_picture'] 
-    
+    form_class = EventForm
     success_url = reverse_lazy('event_list')
 
     def form_valid(self, form):
-
-        event_instance = form.save(commit=False)
-        
-        event_date_str = self.request.POST.get('event_date')
-        if event_date_str:
-            try:
-                # Convertit la chaîne de caractères en objet date Python
-                event_instance.event_date = datetime.datetime.strptime(event_date_str, '%Y-%m-%d').date()
-            except ValueError:
-                # Gère l'erreur si le format de date n'est pas bon
-                form.add_error('event_date', 'Format de date invalide (attendu AAAA-MM-JJ).')
-                return self.form_invalid(form)
-        else:
-            # Gère le cas où la date est manquante (si 'required' est dans le modèle)
-            form.add_error('event_date', 'Ce champ est obligatoire.')
-            return self.form_invalid(form)
-
-        event_instance.save() # Sauvegarde l'instance avec la date maintenant
         messages.success(self.request, "Événement créé avec succès!")
-        return redirect(self.success_url)
+        return super().form_valid(form) # Appelle la méthode form_valid de la classe parente
 
     def get_login_url(self):
         messages.warning(self.request, "Vous devez être connecté pour créer un événement")
         return super().get_login_url()
-
-
 
 # Vue Détail (publique)
 class EventDetailView(DetailView):
@@ -80,7 +54,7 @@ class EventDetailView(DetailView):
 class EventUpdateView(AdminRequiredMixin, UpdateView):
     model = Events
     template_name = 'events/event_form.html'
-    fields = '__all__'
+    form_class = EventForm 
     success_url = reverse_lazy('event_list')
 
     def form_valid(self, form):
@@ -88,17 +62,15 @@ class EventUpdateView(AdminRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 # Vue Suppression (réservée aux admins)
-class EventDeleteView(AdminRequiredMixin,DeleteView):
+class EventDeleteView(AdminRequiredMixin, DeleteView):
     model = Events
     template_name = 'events/event_confirm_delete.html'
     success_url = reverse_lazy('event_list')  # Redirection après suppression
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Ajoutez l'URL de détail de l'événement au contexte
         context['event_detail_url'] = reverse('event_detail', kwargs={'pk': self.object.pk})
         return context
-
 
 # Gestion des erreurs CSRF
 @requires_csrf_token
@@ -114,12 +86,9 @@ def about(request):
     return render(request, 'about.html')
 
 
-
-
 class CustomLogin(LoginView):
     template_name = 'register/login.html'
     redirect_authenticated_user = True
-    
     success_url = reverse_lazy('contact_list')
 
     def get_success_url(self):

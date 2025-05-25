@@ -79,3 +79,9 @@ pip-wheel-metadata/
 
 ####Pour le fichier note.txt#####
 note.txt
+
+# Django static files
+staticfiles/
+
+# Django media files
+media/
