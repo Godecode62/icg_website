@@ -157,11 +157,11 @@
         </div>
         {% endif %}
         
-        {% comment %} <div class="meta-card">
-            Pour cette partie on verra un peu plus tard
+        <div class="meta-card">
+
             <div class="meta-title">Date d'envoi</div>
-            <div class="meta-content">{{ contact.created_at|date:"d/m/Y à H:i" }}</div>
-        </div> {% endcomment %}
+            <div class="meta-content">{{ contact.received_at|date:"d M Y H:i" }}</div>
+        </div> 
     </div>
 
     <div class="contact-message">
