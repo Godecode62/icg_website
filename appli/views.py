@@ -34,7 +34,8 @@ class EventListView(ListView):
 # Vue Création (réservée aux utilisateurs connectés)
 class EventCreateView(AdminRequiredMixin, CreateView):
     model = Events
-    template_name = 'events/event_form.html'
+    # template_name = 'events/event_form.html'
+    template_name = "create_event.html"
     fields = '__all__'
     success_url = reverse_lazy('event_list')
 
