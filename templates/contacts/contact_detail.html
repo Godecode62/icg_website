@@ -65,9 +65,10 @@
     .meta-content {
         color: var(--text-primary);
         font-size: 1rem;
-        /* Ajout de ces lignes pour le redimensionnement de l'email */
-        **word-break: break-all;** /* Casse le mot n'importe où si trop long */
-        **overflow-wrap: break-word;** /* Gère le débordement des mots longs */
+        /* Propriétés pour forcer le retour à la ligne des textes longs */
+        **word-break: break-all;** /* Casse les mots longs n'importe où */
+        **overflow-wrap: break-word;** /* Assure que le contenu ne déborde pas du conteneur */
+        **min-width: 0;** /* Très important dans les contextes de grille/flexbox pour permettre le wrap */
     }
 
     .contact-message {
