@@ -35,7 +35,7 @@
     }
 
     .contact-hero .orange-text {
-        color: #f9a825; /* Couleur orange */
+        color: #f9a825;
     }
 
     .contact-hero p {
@@ -57,13 +57,12 @@
 
     .contact-page-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* Deux colonnes de largeur égale par défaut */
+        grid-template-columns: 1fr 1fr;
         gap: 30px;
     }
 
-    /* Styles pour le formulaire de contact */
     .contact-form {
-        background-color: #2c2c2c; /* Fond sombre pour le formulaire */
+        background-color: #2c2c2c;
         padding: 30px;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
@@ -72,7 +71,7 @@
     .contact-form .section-title {
         margin-bottom: 20px;
         font-size: 2em;
-        color: #f9a825; /* Titre en orange */
+        color: #f9a825;
     }
 
     .contact-form .form-group {
@@ -116,16 +115,15 @@
         align-items: center;
         gap: 10px;
         transition: background-color 0.3s ease;
-        background-color: #f9a825; /* Couleur orange */
+        background-color: #f9a825;
     }
 
     .contact-form .submit-btn:hover {
-        background-color: #d97706; /* Assombrir légèrement la couleur orange au survol */
+        background-color: #d97706;
     }
 
-    /* Styles pour les informations de l'entreprise */
     .company-info {
-        background-color: #2c2c2c; /* Fond sombre pour les infos */
+        background-color: #2c2c2c;
         padding: 30px;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
@@ -134,7 +132,7 @@
     .company-info .section-title {
         margin-bottom: 20px;
         font-size: 2em;
-        color: #f9a825; /* Titre en orange */
+        color: #f9a825;
     }
 
     .company-info .info-card {
@@ -145,7 +143,7 @@
     }
 
     .company-info .info-icon {
-        background-color: #f9a825; /* Couleur orange */
+        background-color: #f9a825;
         color: #fff;
         width: 40px;
         height: 40px;
@@ -157,41 +155,53 @@
     }
 
     .company-info .info-content h3 {
-        color: #f9a825; /* Couleur orange pour les titres importants */
+        color: #f9a825;
         margin-top: 0;
         margin-bottom: 5px;
         font-size: 1.3em;
     }
-    /* Style pour les liens cliquables */
+
     .company-info .info-content p a {
-        color: #f9a825; /* Garder la couleur orange pour les liens */
-        text-decoration: none; /* Enlever le soulignement par défaut */
+        color: #f9a825;
+        text-decoration: none;
     }
     .company-info .info-content p a:hover {
-        text-decoration: underline; /* Souligner au survol */
+        text-decoration: underline;
+    }
+
+    /* Styles spécifiques pour les liens mailto et tel */
+    .company-info .info-content p a[href^="mailto:"],
+    .company-info .info-content p a[href^="tel:"] {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    .company-info .info-content p a[href^="mailto:"]:hover,
+    .company-info .info-content p a[href^="tel:"]:hover {
+        color: #f9a825;
+        text-decoration: underline;
     }
 
 
     .company-info .map-container {
         margin-top: 30px;
         border-radius: 4px;
-        overflow: hidden; /* Empêche la carte de dépasser le border-radius */
+        overflow: hidden;
     }
 
     .company-info .map-container iframe {
         width: 100%;
-        height: 300px; /* Hauteur de la carte */
+        height: 300px;
         border: 0;
     }
 
-    /* Responsive design */
     @media (max-width: 768px) {
         .contact-page-grid {
-            grid-template-columns: 1fr; /* Une seule colonne sur les écrans plus petits */
+            grid-template-columns: 1fr;
         }
 
         .company-info {
-            margin-top: 30px; /* Ajouter de l'espace entre le formulaire et les infos sur les petits écrans */
+            margin-top: 30px;
         }
 
         .contact-hero h1 {
@@ -330,7 +340,15 @@
                     </div>
 
                     <div class="map-container">
-                        <iframe src="https://maps.google.com/?cid=11608337905359420929" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        <iframe 
+                            src="https://maps.google.com/?cid=11608337905359420929"
+                            width="600" 
+                            height="450" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,21 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/about.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+
+    .contact-info-section .info-content p a[href^="mailto:"],
+    .contact-info-section .info-content p a[href^="tel:"] {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    .contact-info-section .info-content p a[href^="mailto:"]:hover,
+    .contact-info-section .info-content p a[href^="tel:"]:hover {
+        color: #f9a825; 
+        text-decoration: underline; 
+    }
+</style>
 {% endblock %}
 
 {% block content %}
