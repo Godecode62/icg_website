@@ -5,10 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}International Consulting Guinea{% endblock %}</title>
+    
+    <meta name="description" content="International Consulting Guinea : L'expertise au service de la transformation d'entreprise. Nous apportons des stratégies novatrices et une vision claire pour chaque défi.">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="{% static 'css/navbar.css' %}" rel="stylesheet">
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     {% block extra_head %}{% endblock %}
     {% block extra_css %}{% endblock %}
 </head>
@@ -22,6 +26,6 @@
     {% block extra_js %}{% endblock %}
 
     <script src="{% static 'js/navbar.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/main.js' versed %}"></script>
 </body>
 </html>

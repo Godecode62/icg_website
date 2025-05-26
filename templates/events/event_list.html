@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}Événements - International Consulting Guinea{% endblock %} {# <-- C'est cette ligne #}
+
 {% block extra_css %}
 <style>
     :root {
@@ -303,7 +305,7 @@
             align-items: flex-start;
             gap: 1rem;
         }
-        
+
         .events-grid {
             grid-template-columns: 1fr;
         }
@@ -336,10 +338,10 @@
                     <div class="event-month">{{ event.event_date|date:"M"|upper }}</div>
                 </div>
             </div>
-            
+
             <div class="event-content">
                 <h3 class="event-title">{{ event.event_name }}</h3>
-                
+
                 <div class="event-meta">
                     <div class="meta-item">
                         <i class="fas fa-map-marker-alt"></i>
@@ -352,14 +354,14 @@
                     </div>
                     {% endif %}
                 </div>
-                
+
                 <p class="event-description">{{ event.event_description|truncatewords:20 }}</p>
-                
+
                 <div class="event-actions">
                     <a href="{% url 'event_detail' event.pk %}" class="btn btn-details">
                         Voir détails
                     </a>
-                    
+
                     {% if request.user.is_authenticated or request.user.is_superuser %}
                     <div class="action-buttons">
                         <a href="{% url 'event_update' event.pk %}" class="btn btn-action btn-edit" title="Modifier">
