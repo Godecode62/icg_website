@@ -5,176 +5,129 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/about.css' %}">
+<link rel="stylesheet" href="{% static 'css/carousel.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-<style>
-
-    .contact-info-section .info-content p a[href^="mailto:"],
-    .contact-info-section .info-content p a[href^="tel:"] {
-        color: inherit;
-        text-decoration: none;
-    }
-    
-    .contact-info-section .info-content p a[href^="mailto:"]:hover,
-    .contact-info-section .info-content p a[href^="tel:"]:hover {
-        color: #f9a825; 
-        text-decoration: underline; 
-    }
-</style>
 {% endblock %}
 
 {% block content %}
-    <section class="about-hero" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-                url('{% static 'images/home2.png' %}') no-repeat center center/cover;">
-        <div class="hero-overlay">
-            <h1>NOTRE <span class="orange-text">AMBITION</span></h1>
-            <p>L'excellence du conseil stratégique, sans frontières.</p>
+    <section class="about-hero">
+        <div class="carousel-container">
+            {# Slide 1: Ressources Humaines #}
+            <div class="carousel-slide fade">
+                <img src="{% static 'images/home2.png' %}" alt="Développement du Capital Humain">
+                <div class="hero-overlay">
+                    <h1><span class="service-name-title">Ressources Humaines :</span> Ensemble, créons de belles opportunités !</h1>
+                    <p>Nous faisons le lien entre les personnes qui cherchent un travail épanouissant et les entreprises qui ont besoin de bonnes compétences. Nous accompagnons chaque parcours avec attention et dévouement, pour des collaborations qui durent et qui donnent de bons résultats.</p>
+                    <div class="hero-buttons">
+                        <a href="#offres-emploi" class="cta-button orange-bg">Voir les offres d'emploi</a>
+                        <a href="#creer-compte" class="cta-button outline-button">Déposez votre CV</a>
+                    </div>
+                </div>
+            </div>
+
+            {# Slide 2: Hygiène Sécurité et Environnement (HSE) #}
+            <div class="carousel-slide fade">
+                <img src="{% static 'images/home3.png' %}" alt="Sécurité et Environnement Durable">
+                <div class="hero-overlay">
+                    <h1><span class="service-name-title">Hygiène, Sécurité & Environnement :</span> Votre sérénité, notre engagement !</h1>
+                    <p>La sécurité et le bien-être de vos équipes sont très importants. Nous vous aidons à construire un environnement de travail sûr et bon pour la nature, pour que votre activité soit sereine et bien faite.</p>
+                </div>
+            </div>
+
+            {# Slide 3: Responsabilité Sociétale de l'Entreprise (RSE) #}
+            <div class="carousel-slide fade">
+                <img src="{% static 'images/home4.png' %}" alt="Engagement Sociétal et Éthique">
+                <div class="hero-overlay">
+                    <h1><span class="service-name-title">Responsabilité Sociétale (RSE) :</span> Agissons pour un monde meilleur !</h1>
+                    <p>Faites de votre entreprise un véritable moteur de progrès pour la société et la nature. Nous vous accompagnons pour que ce que vous faites compte vraiment et aide à construire un avenir plus juste et qui dure.</p>
+                </div>
+            </div>
+
+            {# Slide 4: Accompagnement et Conseil #}
+            <div class="carousel-slide fade">
+                <img src="{% static 'images/home5.png' %}" alt="Partenariat Stratégique et Conseil">
+                <div class="hero-overlay">
+                    <h1><span class="service-name-title">Accompagnement et Conseil :</span> Votre vision, notre aide pour y arriver !</h1>
+                    <p>Que vous ayez une idée ou un défi, nous sommes à vos côtés. Nos conseils sont clairs et nos façons de faire sont pensées rien que pour vous. Elles vous guident pas à pas pour atteindre vos plus grands objectifs.</p>
+                </div>
+            </div>
+
+            {# Slide 5: Qualité #}
+            <div class="carousel-slide fade">
+                <img src="{% static 'images/home.png' %}" alt="Excellence Opérationnelle et Qualité">
+                <div class="hero-overlay">
+                    <h1><span class="service-name-title">Service Qualité :</span> La qualité, notre promesse pour vous !</h1>
+                    <p>Augmentez vos standards, perfectionnez vos méthodes et assurez des résultats irréprochables. Pour nous, la qualité est le plus important dans tout ce que nous faisons. C'est ce qui garantit votre succès et la joie de vos clients et partenaires.</p>
+                </div>
+            </div>
+
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+        </div>
+
+        <div class="dots-container">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+            <span class="dot" onclick="currentSlide(5)"></span>
         </div>
     </section>
 
-    <section class="dna-section">
+
+    <section class="about-us-intro full-width-section">
         <div class="container">
-            <h2 class="section-title">NOTRE <span class="orange-text">ADN</span></h2>
-            <p class="section-subtitle">Ce qui fait la singularité d'International Consulting Guinea</p>
+            <h2 class="section-title">QUI SOMMES-<span class="orange-text">NOUS</span> ?</h2>
+            <p class="section-subtitle">International Consulting Guinea : Votre partenaire de confiance pour un développement qui fait du bien à tous.</p>
 
-            <div class="dna-grid">
-                <div class="dna-card">
-                    <div class="dna-icon orange-bg">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>Approche Agile</h3>
-                    <p>Nous combinons méthodologies éprouvées et flexibilité pour s'adapter à chaque client.</p>
+            <div class="intro-content">
+                <div class="intro-main-text">
+                    <p>
+                        Chez International Consulting Guinea (ICG), nous ne sommes pas juste des conseillers. Nous sommes des bâtisseurs de liens, unissant les envies des personnes aux besoins des entreprises, pour de très bons résultats partout dans le monde. Notre rôle est d'accompagner les entreprises, les organisations et les institutions pour qu'elles grandissent, en leur donnant des solutions simples et faites pour leurs besoins précis.
+                    </p>
+                    <p>
+                        Depuis le début, nous transformons les défis en de belles occasions de développement qui durent. Nous sommes convaincus qu'une entreprise qui marche bien fait attention à ses équipes, travaille en sécurité, prend soin de notre planète et s'implique vraiment pour le bien de tous. C'est pourquoi nos services couvrent tous ces points importants, toujours avec une approche humaine et respectueuse.
+                    </p>
                 </div>
-
-                <div class="dna-card">
-                    <div class="dna-icon orange-bg">
-                        <i class="fas fa-globe-africa"></i>
+                <div class="intro-right-column">
+                    <div class="intro-image">
+                        <img src="{% static 'images/rse.jpg' %}" alt="ICG Team Vision">
                     </div>
-                    <h3>Expertise Locale</h3>
-                    <p>Une connaissance approfondie des marchés ouest-africains et de leurs spécificités.</p>
-                </div>
-
-                <div class="dna-card">
-                    <div class="dna-icon orange-bg">
-                        <i class="fas fa-rocket"></i>
+                    <div class="services-list">
+                        <h3>Nos domaines d'aide pour vous :</h3>
+                        <ul>
+                            <li><i class="fas fa-check-circle orange-text"></i> Ressources Humaines : pour le recrutement, la formation et la gestion des parcours de travail</li>
+                            <li><i class="fas fa-check-circle orange-text"></i> Hygiène, Sécurité et Environnement (HSE) : pour un cadre de travail sain et sécurisé</li>
+                            <li><i class="fas fa-check-circle orange-text"></i> Responsabilité Sociétale de l'Entreprise (RSE) : pour un impact positif sur la société</li>
+                            <li><i class="fas fa-check-circle orange-text"></i> Accompagnement et Conseil : pour vous guider dans vos grandes décisions</li>
+                            <li><i class="fas fa-check-circle orange-text"></i> Systèmes de Gestion de la Qualité : pour que ce que vous faites soit toujours de la meilleure qualité</li>
+                        </ul>
                     </div>
-                    <h3>Innovation Continue</h3>
-                    <p>Nous intégrons les dernières avancées technologiques dans nos solutions.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="approach-section dark-bg">
+
+    <section class="our-mission-vision dark-bg">
         <div class="container">
-            <div class="approach-grid">
-                <div class="approach-content">
-                    <h2 class="section-title white-text">NOTRE <span class="orange-text">APPROCHE</span></h2>
-                    <p>Nous réinventons le conseil en stratégie avec une méthode unique en 3 phases :</p>
-
-                    <div class="phase">
-                        <div class="phase-number orange-bg">1</div>
-                        <div class="phase-content">
-                            <h3 class="orange-text">Écoute Active</h3>
-                            <p>Une immersion complète pour comprendre vos enjeux spécifiques et votre écosystème.</p>
-                        </div>
-                    </div>
-
-                    <div class="phase">
-                        <div class="phase-number orange-bg">2</div>
-                        <div class="phase-content">
-                            <h3 class="orange-text">Solution Sur Mesure</h3>
-                            <p>Développement de stratégies adaptées à votre contexte et objectifs.</p>
-                        </div>
-                    </div>
-
-                    <div class="phase">
-                        <div class="phase-number orange-bg">3</div>
-                        <div class="phase-content">
-                            <h3 class="orange-text">Implémentation Accompagnée</h3>
-                            <p>Nous restons à vos côtés pour la mise en œuvre et les ajustements nécessaires.</p>
-                        </div>
-                    </div>
+            <div class="mv-grid">
+                <div class="mv-card">
+                    <h2 class="section-title white-text">NOTRE <span class="orange-text">MISSION</span></h2>
+                    <p>
+                        Notre mission est de vous donner les outils, les idées et l'aide qu'il vous faut pour avancer et bien réussir dans le monde des affaires. Que ce soit en améliorant votre capital humain, en assurant un environnement de travail sûr et bon pour la nature, en intégrant le bien-être social à votre activité ou en atteignant le meilleur niveau de qualité, nous sommes là pour vous.
+                    </p>
                 </div>
-                <div class="approach-image">
-                    <img src="{% static 'images/home2.png' %}" alt="Approche ICG">
+                <div class="mv-card">
+                    <h2 class="section-title white-text">NOTRE <span class="orange-text">VISION</span></h2>
+                    <p>
+                        Nous voulons être un cabinet de conseil reconnu dans le monde entier, grâce aux résultats positifs que nous apportons à nos clients et à notre participation au développement des pays où nous travaillons. Nous rêvons d'un futur où chaque entreprise, petite ou grande, peut obtenir l'aide nécessaire pour bien fonctionner de façon juste et sur le long terme, partout dans le monde.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="advantages-section">
-        <div class="container">
-            <h2 class="section-title">NOS <span class="orange-text">ATOUTS</span> DIFFÉRENCIANTS</h2>
-
-            <div class="advantages-grid">
-                <div class="advantage-card">
-                    <div class="advantage-icon">
-                        <i class="fas fa-brain orange-text"></i>
-                    </div>
-                    <h3>Une Équipe Dynamique</h3>
-                    <p>Une combinaison rare d'experts seniors et de jeunes talents formés aux dernières méthodologies.</p>
-                </div>
-
-                <div class="advantage-card">
-                    <div class="advantage-icon">
-                        <i class="fas fa-chart-network orange-text"></i>
-                    </div>
-                    <h3>Réseau International</h3>
-                    <p>Partenariats stratégiques avec des cabinets leaders en Europe et en Afrique.</p>
-                </div>
-
-                <div class="advantage-card">
-                    <div class="advantage-icon">
-                        <i class="fas fa-tools orange-text"></i>
-                    </div>
-                    <h3>Boîte à Outils Exclusive</h3>
-                    <p>Des outils propriétaires développés spécifiquement pour le contexte africain.</p>
-                </div>
-
-                <div class="advantage-card">
-                    <div class="advantage-icon">
-                        <i class="fas fa-hand-holding-heart orange-text"></i>
-                    </div>
-                    <h3>Engagement Sociétal</h3>
-                    <p>10% de nos bénéfices réinvestis dans la formation des jeunes talents locaux.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="team-section dark-bg">
-        <div class="container">
-            <h2 class="section-title white-text">L'ESPRIT <span class="orange-text">ICG</span></h2>
-            <p class="section-subtitle">Notre culture d'entreprise en 3 piliers</p>
-
-            <div class="culture-grid">
-                <div class="culture-card">
-                    <div class="culture-icon orange-bg">
-                        <i class="fas fa-people-arrows"></i>
-                    </div>
-                    <h3>Collaboration</h3>
-                    <p>Nous croyons à la force du collectif et à l'intelligence collaborative.</p>
-                </div>
-
-                <div class="culture-card">
-                    <div class="culture-icon orange-bg">
-                        <i class="fas fa-seedling"></i>
-                    </div>
-                    <h3>Croissance</h3>
-                    <p>Un environnement stimulant où chacun peut développer son potentiel.</p>
-                </div>
-
-                <div class="culture-card">
-                    <div class="culture-icon orange-bg">
-                        <i class="fas fa-medal"></i>
-                    </div>
-                    <h3>Excellence</h3>
-                    <p>La quête permanente du meilleur pour nos clients et pour nous-mêmes.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <section class="contact-info-section dark-bg">
         <div class="container">
@@ -182,15 +135,7 @@
 
             <div class="contact-grid">
                 <div class="map-container">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3933.3219359601535!2d-13.5769362!3d9.653509!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf1d2b0059b8d197%3A0xa11919d241a67e01!2sT6%20rond%20point!5e0!3m2!1sfr!2s!4v1748257046072!5m2!1sfr!2s"
-                        width="100%"
-                        height="100%"
-                        style="border:0;"
-                        allowfullscreen=""
-                        loading="lazy"
-                        title="Siège ICG à Kaloum-Conakry - Près du Rond-point T6">
-                    </iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3933.3219360718463!2d-13.579511126391747!3d9.653508990434931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf1d2b0059b8d197%3A0xa11919d241a67e01!2sT6%20rond%20point!5e0!3m2!1sfr!2s!4v1748357684207!5m2!1sfr!2s" width="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
 
                 <div class="info-container">
@@ -201,7 +146,7 @@
                         <div class="info-content">
                             <h3 class="orange-text">Adresse</h3>
                             <p>
-                                <strong>Carrefour 6ème Tranche (T6)</strong><br>
+                                Carrefour 6ème Tranche (T6)<br>
                                 Immeuble le Général, 2ème Étage<br>
                                 Au-dessus de la Pharmacie DOUK<br>
                                 Kaloum-Conakry, Guinée
@@ -217,7 +162,7 @@
                             <h3 class="orange-text">Téléphone</h3>
                             <p><a href="tel:+224620113225">+224 620 11 32 25</a></p>
                         </div>
-                    </div>
+                    -                    </div>
 
                     <div class="info-card">
                         <div class="info-icon orange-bg">
@@ -246,13 +191,17 @@
     <section class="about-cta">
         <div class="container">
             <h2>Prêt à écrire le futur avec nous ?</h2>
-            <p>Rejoignez l'aventure ICG dès aujourd'hui</p>
+            <p>Rejoignez l'aventure ICG dès aujourd'hui et transformons vos envies en succès bien réels.</p>
             <div class="cta-buttons">
                 <a href="{% url 'contact' %}" class="cta-button orange-bg">Devenir Client</a>
-                <a href="#careers" class="cta-button outline-button">Nous Rejoindre</a>
+                <a href="#careers" class="cta-button outline-button">Nous Rejoindre (Carrières)</a>
             </div>
         </div>
     </section>
 
+{% endblock %}
+
+{% block extra_js %}
     <script src="{% static 'js/about.js' %}"></script>
+    <script src="{% static 'js/about_carousel.js' %}"></script>
 {% endblock %}

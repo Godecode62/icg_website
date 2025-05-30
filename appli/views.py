@@ -78,9 +78,6 @@ def csrf_failure(request, reason=""):
     context = {'reason': reason}
     return render(request, '403_csrf.html', context, status=403)
 
-# Vues statiques (publiques)
-def show_entreprise(request):
-    return render(request, 'index.html')
 
 def about(request):
     return render(request, 'about.html')

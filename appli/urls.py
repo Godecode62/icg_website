@@ -8,7 +8,6 @@ from appli.views import (
     EventCreateView,
     EventUpdateView,
     EventDeleteView,
-    show_entreprise,
     about,
     CustomLogin,
     logOut
@@ -19,7 +18,7 @@ from appli import contact_views
 
 urlpatterns = [
     # Pages publiques
-    path('', show_entreprise, name='show_entreprise'),
+    path('', about, name='show_entreprise'),
     path('about', about, name='about'),
     path('contact', contact_views.ContactCreateView.as_view(), name='contact'),
     

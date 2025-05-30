@@ -7,8 +7,7 @@
         </a>
 
         <div class="navbar-links">
-            <a href="{% url 'show_entreprise' %}" class="nav-link">Accueil</a>
-            <a href="{% url 'about' %}" class="nav-link">À propos</a>
+            <a href="{% url 'about' %}" class="nav-link">Accueil</a>
             <a href="{% url 'contact' %}" class="nav-link">Contact</a>
             <a href="{% url 'event_list' %}" class="nav-link">Evenements</a>
             {% if request.user.is_authenticated and request.user.is_superuser %}
@@ -30,8 +29,7 @@
     </div>
 
     <div class="mobile-menu">
-        <a href="{% url 'show_entreprise' %}" class="mobile-nav-link">Accueil</a>
-        <a href="{% url 'about' %}" class="mobile-nav-link">À propos</a>
+        <a href="{% url 'about' %}" class="mobile-nav-link">Accueil</a>
         <a href="{% url 'contact' %}" class="mobile-nav-link">Contact</a>
         <a href="{% url 'event_list' %}" class="mobile-nav-link">Evenements</a>
         {% if request.user.is_authenticated and request.user.is_superuser %}
