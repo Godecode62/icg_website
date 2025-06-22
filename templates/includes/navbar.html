@@ -9,7 +9,7 @@
         <div class="navbar-links">
             <a href="{% url 'about' %}" class="nav-link">Accueil</a>
             <a href="{% url 'contact' %}" class="nav-link">Contact</a>
-            <a href="{% url 'event_list' %}" class="nav-link">Evenements</a>
+            {% comment %} <a href="{% url 'event_list' %}" class="nav-link">Evenements</a> {% endcomment %}
             {% if request.user.is_authenticated and request.user.is_superuser %}
                 <a href="{% url 'contact_list' %}" class="nav-link">Gerer Les Messages</a>
                 <a href="{% url 'event_list' %}" class="nav-link">Gerer Les Evenements</a>
