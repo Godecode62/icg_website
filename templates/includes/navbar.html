@@ -1,8 +1,56 @@
 {% load static %}
 
+<style>
+.navbar {
+    background-color: #1a1a1a;
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #007bff;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+}
+
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none;
+    }
+}
+</style>
+
 <nav class="navbar">
     <div class="navbar-container">
-        <a href="#" class="navbar-logo">
+        <a href="{% url 'show_entreprise' %}" class="navbar-logo">
             <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo-img">
         </a>
 
@@ -11,9 +59,9 @@
             <a href="{% url 'event_list' %}" class="nav-link">Événements</a>
             <a href="{% url 'contact' %}" class="nav-link">Contact</a>
             {% if request.user.is_authenticated and request.user.is_superuser %}
-                <a href="{% url 'contact_list' %}" class="nav-link">Gerer Les Messages</a>
-                <a href="{% url 'event_list' %}" class="nav-link">Gerer Les Evenements</a>
-                <a href="{% url 'logout' %}" class="nav-link">Deconnexion</a>
+                <a href="{% url 'contact_list' %}" class="nav-link">Gérer les messages</a>
+                <a href="{% url 'event_list' %}" class="nav-link">Gérer Les Événements</a>
+                <a href="{% url 'logout' %}" class="nav-link">Déconnexion</a>
             {% else %}
                 <a href="{% url 'login' %}" class="nav-link">Connexion</a>
             {% endif %}
@@ -27,56 +75,4 @@
             </div>
         </button>
     </div>
-
-    <div class="mobile-menu">
-        <a href="{% url 'about' %}" class="mobile-nav-link">Accueil</a>
-        <a href="{% url 'contact' %}" class="mobile-nav-link">Contact</a>
-        <a href="{% url 'event_list' %}" class="mobile-nav-link">Evenements</a>
-        {% if request.user.is_authenticated and request.user.is_superuser %}
-            <a href="{% url 'contact_list' %}" class="mobile-nav-link">Gerer Les Messages</a>
-            <a href="{% url 'event_list' %}" class="mobile-nav-link">Gerer Les Evenements</a>
-            <a href="{% url 'logout' %}" class="mobile-nav-link">Deconnexion</a>
-        {% else %}
-            <a href="{% url 'login' %}" class="mobile-nav-link">Connexion</a>
-        {% endif %}
-    </div>
 </nav>
-
-<style>
-    .navbar-links {
-        max-height: 80vh;
-        overflow-y: auto;
-    }
-
-    .mobile-menu {
-        max-height: 70vh;
-        overflow-y: auto;
-    }
-
-    @media (min-width: 768px) {
-        .navbar-links {
-            max-height: none;
-            overflow-y: visible;
-        }
-    }
-
-    .navbar-logo .logo-img {
-        max-height: 80px; /* Taille pour écrans larges */
-        width: auto;
-        height: auto;
-        display: block;
-    }
-
-    @media (max-width: 767px) {
-        .navbar-logo .logo-img {
-            max-height: 60px; /* Taille pour mobiles */
-        }
-    }
-
-    .navbar-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 20px;
-    }
-</style>

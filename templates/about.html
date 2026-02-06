@@ -7,6 +7,83 @@
 <link rel="stylesheet" href="{% static 'css/about.css' %}">
 <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    body {
+        background-color: #ffffff !important;
+    }
+    .about-hero, .our-mission-vision, .about-cta, .info-section, section {
+        background-color: #ffffff !important;
+    }
+    .about-us-intro {
+        background-color: #ffffff !important;
+    }
+    .intro-content, .intro-main-text, .intro-right-column, .services-list {
+        background-color: #ffffff !important;
+    }
+    .mv-card, .info-card, .about-content {
+        background-color: #f8f8f8 !important;
+        color: #222 !important;
+    }
+    .dark-bg {
+        background-color: #f5f5f5 !important;
+    }
+    h1, h2, h3, h4, p, span, li {
+        color: #222 !important;
+    }
+    .section-title, .mv-card h3, .info-content h4, .services-list h3 {
+        color: #111 !important;
+    }
+    .orange-text {
+        color: #f7931e !important;
+    }
+    .section-subtitle {
+        color: #333 !important;
+    }
+    .intro-image {
+        background-color: #ffffff !important;
+    }
+    .about-cta {
+        background: #ffffff !important;
+        background-image: none !important;
+    }
+    .about-cta h2, .about-cta p {
+        color: #222 !important;
+        text-shadow: none !important;
+    }
+    /* Supprimer complètement l'ombre sur les images */
+    .hero-overlay {
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+    .carousel-slide img {
+        filter: brightness(150%) !important;
+    }
+    .carousel-slide::before, .carousel-slide::after {
+        display: none !important;
+    }
+    /* Réduire la taille des polices sur les images et mettre en orange */
+    .carousel-slide .hero-overlay h1 {
+        font-size: 1.2rem !important;
+        color: #f7931e !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+        background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.4)) !important;
+        padding: 15px 25px !important;
+        border-radius: 8px !important;
+        display: inline-block !important;
+    }
+    .carousel-slide .hero-overlay p {
+        font-size: 0.85rem !important;
+        color: #ffffff !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+        background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3)) !important;
+        padding: 12px 20px !important;
+        border-radius: 8px !important;
+        margin-top: 10px !important;
+    }
+    .carousel-slide .hero-overlay .service-name-title {
+        color: #f7931e !important;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +91,7 @@
         <div class="carousel-container">
             {# Slide 1: Ressources Humaines #}
             <div class="carousel-slide fade">
-                <img src="{% static 'images/home2.png' %}" alt="Développement du Capital Humain">
+                <img src="{% static 'images/home1.png' %}" alt="Développement du Capital Humain">
                 <div class="hero-overlay">
                     <h1><span class="service-name-title">Ressources Humaines :</span> Ensemble, créons de belles opportunités !</h1>
                     <p>Nous faisons le lien entre les personnes qui cherchent un travail épanouissant et les entreprises qui ont besoin de bonnes compétences. Nous accompagnons chaque parcours avec attention et dévouement, pour des collaborations qui durent et qui donnent de bons résultats.</p>

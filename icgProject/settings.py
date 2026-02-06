@@ -116,7 +116,7 @@ STORAGES = {
         'OPTIONS': CLOUDFLARE_R2_CONFIG_OPTIONS,
     },
     'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
     },
 }
 
