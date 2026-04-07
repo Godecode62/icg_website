@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inscription de {{ application.full_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-bg: #0f0f0f;
+        --card-bg: #242424;
+        --accent-color: #ff6b00;
+        --text-primary: #ffffff;
+        --text-secondary: #d1d1d1;
+        --glass-effect: rgba(255, 255, 255, 0.05);
+    }
+    body { background-color: var(--primary-bg); color: var(--text-primary); }
+
+    .detail-container { padding: 4rem 2rem; max-width: 700px; margin: 0 auto; }
+
+    .detail-card {
+        background: var(--card-bg); border-radius: 20px; padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--glass-effect);
+    }
+
+    .detail-card h1 {
+        font-size: 1.6rem; margin-bottom: 1.5rem;
+        background: linear-gradient(45deg, var(--accent-color), #ff9a3d);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    .info-row { margin-bottom: 1.2rem; }
+    .info-label { font-weight: 600; color: var(--accent-color); font-size: 0.85rem; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .info-value { color: var(--text-secondary); line-height: 1.7; white-space: pre-line; }
+
+    .btn-back {
+        display: inline-flex; align-items: center; gap: 6px;
+        color: var(--text-secondary); text-decoration: none; margin-bottom: 1.5rem;
+        transition: color 0.3s;
+    }
+    .btn-back:hover { color: var(--accent-color); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    <a href="{% url 'training_application_list' %}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Retour aux inscriptions
+    </a>
+    <div class="detail-card">
+        <h1>Inscription de {{ application.full_name }}</h1>
+
+        <div class="info-row">
+            <div class="info-label">Formation</div>
+            <div class="info-value">{{ application.training.title }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Email</div>
+            <div class="info-value">{{ application.email }}</div>
+        </div>
+        {% if application.phone %}
+        <div class="info-row">
+            <div class="info-label">Téléphone</div>
+            <div class="info-value">{{ application.phone }}</div>
+        </div>
+        {% endif %}
+        <div class="info-row">
+            <div class="info-label">Motivation</div>
+            <div class="info-value">{{ application.cover_letter|default:"Non fournie" }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Date d'inscription</div>
+            <div class="info-value">{{ application.submitted_at|date:"d/m/Y à H:i" }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

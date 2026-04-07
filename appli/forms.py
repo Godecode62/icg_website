@@ -52,3 +52,85 @@ class EventForm(forms.ModelForm):
             'event_description': 'Description',
             'event_picture': 'Image de l\'événement',
         }
+
+
+class JobOfferForm(forms.ModelForm):
+    deadline = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'hse-input',
+            'min': date.today().isoformat()
+        }),
+        label='Date limite',
+        required=False
+    )
+
+    class Meta:
+        model = models.JobOffer
+        fields = ['title', 'description', 'requirements', 'location', 'contract_type', 'is_active', 'deadline']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Titre du poste'}),
+            'description': forms.Textarea(attrs={'class': 'hse-input', 'rows': 5, 'placeholder': 'Description du poste...'}),
+            'requirements': forms.Textarea(attrs={'class': 'hse-input', 'rows': 4, 'placeholder': 'Compétences et prérequis...'}),
+            'location': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Ex: Conakry'}),
+            'contract_type': forms.Select(attrs={'class': 'hse-input'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'hse-checkbox'}),
+        }
+
+
+class TrainingForm(forms.ModelForm):
+    start_date = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'hse-input',
+            'min': date.today().isoformat()
+        }),
+        label='Date de début',
+        required=True
+    )
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'hse-input',
+            'min': date.today().isoformat()
+        }),
+        label='Date de fin',
+        required=False
+    )
+
+    class Meta:
+        model = models.Training
+        fields = ['title', 'description', 'objectives', 'location', 'start_date', 'end_date', 'duration', 'is_active']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Titre de la formation'}),
+            'description': forms.Textarea(attrs={'class': 'hse-input', 'rows': 5, 'placeholder': 'Description de la formation...'}),
+            'objectives': forms.Textarea(attrs={'class': 'hse-input', 'rows': 4, 'placeholder': 'Objectifs de la formation...'}),
+            'location': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Ex: Conakry'}),
+            'duration': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Ex: 3 mois'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'hse-checkbox'}),
+        }
+
+
+class JobApplicationForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['full_name', 'email', 'phone', 'cover_letter', 'resume']
+        widgets = {
+            'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Votre nom complet'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'votre@email.com'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+224 XXX XX XX XX'}),
+            'cover_letter': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Votre lettre de motivation...'}),
+            'resume': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+        }
+
+
+class TrainingApplicationForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['full_name', 'email', 'phone', 'cover_letter']
+        widgets = {
+            'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Votre nom complet'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'votre@email.com'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+224 XXX XX XX XX'}),
+            'cover_letter': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Votre motivation pour cette formation...'}),
+        }

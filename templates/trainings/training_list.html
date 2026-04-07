@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Formations - International Consulting Guinea{% endblock %}
+
+{% block meta_description %}Découvrez les formations professionnelles proposées par International Consulting Guinea. Développez vos compétences avec ICG.{% endblock %}
+{% block og_title %}Formations - International Consulting Guinea{% endblock %}
+{% block og_description %}Découvrez les formations professionnelles proposées par ICG. Développez vos compétences !{% endblock %}
+{% block og_url %}https://icguinea.com/formations{% endblock %}
+{% block twitter_title %}Formations - International Consulting Guinea{% endblock %}
+{% block twitter_description %}Découvrez les formations professionnelles proposées par ICG. Développez vos compétences !{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-bg: #ffffff;
+        --secondary-bg: #f5f5f5;
+        --card-bg: #ffffff;
+        --accent-color: #ff6b00;
+        --accent-hover: #ff8c3a;
+        --text-primary: #1a1a1a;
+        --text-secondary: #555555;
+        --glass-effect: rgba(0, 0, 0, 0.08);
+    }
+
+    body { background-color: var(--secondary-bg); color: var(--text-primary); }
+
+    .trainings-container {
+        padding: 3rem 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+        position: relative;
+    }
+
+    .page-header::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(45deg, var(--accent-color), #ff9a3d);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 1px;
+    }
+
+    .btn-create {
+        background: var(--accent-color);
+        color: #000;
+        font-weight: 600;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+        text-decoration: none;
+    }
+
+    .btn-create:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+    }
+
+    .trainings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .training-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid var(--glass-effect);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .training-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 30px rgba(255, 107, 0, 0.12);
+        border-color: rgba(255, 107, 0, 0.3);
+    }
+
+    .training-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 107, 0, 0.15);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .training-icon i {
+        font-size: 1.3rem;
+        color: var(--accent-color);
+    }
+
+    .training-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 0.8rem;
+        color: var(--text-primary);
+    }
+
+    .training-card p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    .training-meta {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--glass-effect);
+        flex-wrap: wrap;
+    }
+
+    .training-meta span {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .training-meta i { color: var(--accent-color); }
+
+    .btn-detail {
+        display: inline-block;
+        margin-top: 1.2rem;
+        padding: 0.6rem 1.2rem;
+        background: var(--accent-color);
+        color: #000;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .btn-detail:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .page-header { flex-direction: column; gap: 1rem; text-align: center; }
+        .page-title { font-size: 1.8rem; }
+        .trainings-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="trainings-container">
+    <div class="page-header">
+        <h1 class="page-title">Formations</h1>
+        {% if request.user.is_authenticated and request.user.is_superuser %}
+            <a href="{% url 'training_create' %}" class="btn-create">
+                <i class="fas fa-plus"></i> Nouvelle formation
+            </a>
+        {% endif %}
+    </div>
+
+    {% if trainings %}
+    <div class="trainings-grid">
+        {% for training in trainings %}
+        <div class="training-card">
+            <div class="training-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3>{{ training.title }}</h3>
+            <p>{{ training.description|truncatewords:30 }}</p>
+            <div class="training-meta">
+                <span><i class="fas fa-map-marker-alt"></i> {{ training.location }}</span>
+                <span><i class="fas fa-calendar-alt"></i> {{ training.start_date|date:"d M Y" }}</span>
+                {% if training.duration %}
+                <span><i class="fas fa-clock"></i> {{ training.duration }}</span>
+                {% endif %}
+            </div>
+            <a href="{% url 'training_detail' training.pk %}" class="btn-detail">Voir la formation</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-graduation-cap"></i>
+        <h2>Aucune formation disponible</h2>
+        <p>Revenez bientôt pour découvrir nos prochaines formations.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

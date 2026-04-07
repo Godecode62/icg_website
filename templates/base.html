@@ -6,7 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}International Consulting Guinea{% endblock %}</title>
 
-    <meta name="description" content="International Consulting Guinea : L'expertise au service de la transformation d'entreprise. Nous apportons des stratégies novatrices et une vision claire pour chaque défi.">
+    <meta name="description" content="{% block meta_description %}International Consulting Guinea : L'expertise au service de la transformation d'entreprise. Nous apportons des stratégies novatrices et une vision claire pour chaque défi.{% endblock %}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}International Consulting Guinea{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}ICG : L'expertise au service de la transformation d'entreprise.{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}https://icguinea.com{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/logo.png' %}{% endblock %}">
+    <meta property="og:site_name" content="International Consulting Guinea">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="{% block twitter_card %}summary{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}International Consulting Guinea{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}ICG : L'expertise au service de la transformation d'entreprise.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/logo.png' %}{% endblock %}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -93,6 +108,8 @@
                 <ul>
                     <li><a href="{% url 'show_entreprise' %}">Accueil</a></li>
                     <li><a href="{% url 'event_list' %}">Événements</a></li>
+                    <li><a href="{% url 'job_list' %}">Emplois</a></li>
+                    <li><a href="{% url 'training_list' %}">Formations</a></li>
                     <li><a href="{% url 'contact' %}">Contact</a></li>
                 </ul>
             </div>

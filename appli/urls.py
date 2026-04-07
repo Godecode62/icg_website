@@ -14,7 +14,7 @@ from appli.views import (
 )
 
 from django.conf.urls.static import static
-from appli import contact_views
+from appli import contact_views, job_views, training_views
 
 urlpatterns = [
     # Pages publiques
@@ -36,6 +36,30 @@ urlpatterns = [
     path('show_contact/<int:pk>', contact_views.ContactDetailView.as_view(), name='contact_detail'),
     path('delete_contact/<int:pk>', contact_views.ContactDeleteView.as_view(), name='contact_delete'),
     
+    # Offres d'emploi - partie publique
+    path('emplois', job_views.JobOfferListView.as_view(), name='job_list'),
+    path('emploi/<int:pk>', job_views.JobOfferDetailView.as_view(), name='job_detail'),
+    path('emploi/<int:pk>/postuler', job_views.JobApplyView.as_view(), name='job_apply'),
+
+    # Offres d'emploi - partie admin
+    path('emploi/creer', job_views.JobOfferCreateView.as_view(), name='job_create'),
+    path('emploi/<int:pk>/modifier', job_views.JobOfferUpdateView.as_view(), name='job_update'),
+    path('emploi/<int:pk>/supprimer', job_views.JobOfferDeleteView.as_view(), name='job_delete'),
+    path('candidatures/emploi', job_views.JobApplicationListView.as_view(), name='job_application_list'),
+    path('candidature/emploi/<int:pk>', job_views.JobApplicationDetailView.as_view(), name='job_application_detail'),
+
+    # Formations - partie publique
+    path('formations', training_views.TrainingListView.as_view(), name='training_list'),
+    path('formation/<int:pk>', training_views.TrainingDetailView.as_view(), name='training_detail'),
+    path('formation/<int:pk>/postuler', training_views.TrainingApplyView.as_view(), name='training_apply'),
+
+    # Formations - partie admin
+    path('formation/creer', training_views.TrainingCreateView.as_view(), name='training_create'),
+    path('formation/<int:pk>/modifier', training_views.TrainingUpdateView.as_view(), name='training_update'),
+    path('formation/<int:pk>/supprimer', training_views.TrainingDeleteView.as_view(), name='training_delete'),
+    path('candidatures/formation', training_views.TrainingApplicationListView.as_view(), name='training_application_list'),
+    path('candidature/formation/<int:pk>', training_views.TrainingApplicationDetailView.as_view(), name='training_application_detail'),
+
     # Connexion et déconnexion
     path('connexion', CustomLogin.as_view(), name='login'),
     path('deconnexion', logOut, name='logout'),

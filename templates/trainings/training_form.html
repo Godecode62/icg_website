@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if object %}Modifier{% else %}Créer{% endif %} une formation{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-bg: #0f0f0f;
+        --secondary-bg: #1a1a1a;
+        --card-bg: #242424;
+        --accent-color: #ff6b00;
+        --accent-hover: #ff8c3a;
+        --text-primary: #ffffff;
+        --text-secondary: #d1d1d1;
+        --glass-effect: rgba(255, 255, 255, 0.05);
+    }
+
+    body { background-color: var(--primary-bg); color: var(--text-primary); }
+
+    .form-container {
+        padding: 4rem 2rem;
+        max-width: 700px;
+        margin: 0 auto;
+        min-height: 100vh;
+    }
+
+    .form-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--glass-effect);
+    }
+
+    .form-card h1 {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+        background: linear-gradient(45deg, var(--accent-color), #ff9a3d);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .form-group { margin-bottom: 1.5rem; }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .hse-input, .hse-checkbox {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: var(--secondary-bg);
+        border: 1px solid var(--glass-effect);
+        border-radius: 10px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+
+    .hse-input:focus { outline: none; border-color: var(--accent-color); }
+    textarea.hse-input { resize: vertical; }
+
+    .errorlist {
+        list-style: none; padding: 0; margin: 0.3rem 0 0;
+        color: #ff4d4d; font-size: 0.85rem;
+    }
+
+    .btn-submit {
+        background: var(--accent-color);
+        color: #000;
+        font-weight: 700;
+        border: none;
+        padding: 0.85rem 2rem;
+        border-radius: 50px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .btn-submit:hover { background: var(--accent-hover); transform: translateY(-2px); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card">
+        <h1>{% if object %}Modifier{% else %}Créer{% endif %} une formation</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}{{ field.errors }}{% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn-submit">
+                {% if object %}Mettre à jour{% else %}Créer la formation{% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

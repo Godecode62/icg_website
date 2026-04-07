@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Offres d'emploi - International Consulting Guinea{% endblock %}
+
+{% block meta_description %}Découvrez les offres d'emploi disponibles chez International Consulting Guinea. CDI, CDD, stages et freelance à Conakry et en Guinée.{% endblock %}
+{% block og_title %}Offres d'emploi - International Consulting Guinea{% endblock %}
+{% block og_description %}Découvrez les offres d'emploi disponibles chez ICG. Rejoignez notre équipe !{% endblock %}
+{% block og_url %}https://icguinea.com/emplois{% endblock %}
+{% block twitter_title %}Offres d'emploi - International Consulting Guinea{% endblock %}
+{% block twitter_description %}Découvrez les offres d'emploi disponibles chez ICG. Rejoignez notre équipe !{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-bg: #ffffff;
+        --secondary-bg: #f5f5f5;
+        --card-bg: #ffffff;
+        --accent-color: #ff6b00;
+        --accent-hover: #ff8c3a;
+        --text-primary: #1a1a1a;
+        --text-secondary: #555555;
+        --glass-effect: rgba(0, 0, 0, 0.08);
+    }
+
+    body { background-color: var(--secondary-bg); color: var(--text-primary); }
+
+    .jobs-container {
+        padding: 3rem 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+        position: relative;
+    }
+
+    .page-header::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(45deg, var(--accent-color), #ff9a3d);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 1px;
+    }
+
+    .btn-create {
+        background: var(--accent-color);
+        color: #000;
+        font-weight: 600;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+        text-decoration: none;
+    }
+
+    .btn-create:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
+    }
+
+    .jobs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .job-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid var(--glass-effect);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .job-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 30px rgba(255, 107, 0, 0.12);
+        border-color: rgba(255, 107, 0, 0.3);
+    }
+
+    .job-badge {
+        display: inline-block;
+        background: rgba(255, 107, 0, 0.15);
+        color: var(--accent-color);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        width: fit-content;
+    }
+
+    .job-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 0.8rem;
+        color: var(--text-primary);
+    }
+
+    .job-card p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    .job-meta {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--glass-effect);
+        flex-wrap: wrap;
+    }
+
+    .job-meta span {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .job-meta i {
+        color: var(--accent-color);
+    }
+
+    .btn-detail {
+        display: inline-block;
+        margin-top: 1.2rem;
+        padding: 0.6rem 1.2rem;
+        background: var(--accent-color);
+        color: #000;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .btn-detail:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .page-header { flex-direction: column; gap: 1rem; text-align: center; }
+        .page-title { font-size: 1.8rem; }
+        .jobs-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="jobs-container">
+    <div class="page-header">
+        <h1 class="page-title">Offres d'emploi</h1>
+        {% if request.user.is_authenticated and request.user.is_superuser %}
+            <a href="{% url 'job_create' %}" class="btn-create">
+                <i class="fas fa-plus"></i> Nouvelle offre
+            </a>
+        {% endif %}
+    </div>
+
+    {% if jobs %}
+    <div class="jobs-grid">
+        {% for job in jobs %}
+        <div class="job-card">
+            <span class="job-badge">{{ job.contract_type }}</span>
+            <h3>{{ job.title }}</h3>
+            <p>{{ job.description|truncatewords:30 }}</p>
+            <div class="job-meta">
+                <span><i class="fas fa-map-marker-alt"></i> {{ job.location }}</span>
+                {% if job.deadline %}
+                <span><i class="fas fa-calendar-alt"></i> Limite: {{ job.deadline|date:"d M Y" }}</span>
+                {% endif %}
+            </div>
+            <a href="{% url 'job_detail' job.pk %}" class="btn-detail">Voir l'offre</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-briefcase"></i>
+        <h2>Aucune offre d'emploi disponible</h2>
+        <p>Revenez bientôt pour découvrir nos nouvelles opportunités.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

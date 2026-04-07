@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inscriptions formations - Administration{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-bg: #0f0f0f;
+        --card-bg: #242424;
+        --accent-color: #ff6b00;
+        --text-primary: #ffffff;
+        --text-secondary: #d1d1d1;
+        --glass-effect: rgba(255, 255, 255, 0.05);
+    }
+    body { background-color: var(--primary-bg); color: var(--text-primary); }
+
+    .list-container { padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+    .page-title {
+        font-size: 2rem; margin-bottom: 2rem;
+        background: linear-gradient(45deg, var(--accent-color), #ff9a3d);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    .table-wrapper { overflow-x: auto; }
+
+    table {
+        width: 100%; border-collapse: collapse;
+        background: var(--card-bg); border-radius: 12px; overflow: hidden;
+    }
+    th { background: rgba(255, 107, 0, 0.15); color: var(--accent-color); padding: 1rem; text-align: left; font-size: 0.9rem; }
+    td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--glass-effect); color: var(--text-secondary); font-size: 0.9rem; }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    .btn-view {
+        color: var(--accent-color); text-decoration: none; font-weight: 600;
+    }
+    .btn-view:hover { text-decoration: underline; }
+
+    .empty-state { text-align: center; padding: 3rem; color: var(--text-secondary); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="list-container">
+    <h1 class="page-title">Inscriptions - Formations</h1>
+
+    {% if applications %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Formation</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td>{{ app.full_name }}</td>
+                    <td>{{ app.email }}</td>
+                    <td>{{ app.training.title }}</td>
+                    <td>{{ app.submitted_at|date:"d/m/Y H:i" }}</td>
+                    <td><a href="{% url 'training_application_detail' app.pk %}" class="btn-view">Voir</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Aucune inscription pour le moment.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -86,15 +86,31 @@ def about(request):
 class CustomLogin(LoginView):
     template_name = 'register/login.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('contact_list')
+
+    def form_valid(self, form):
+        remember = self.request.POST.get('remember')
+        if not remember:
+            self.request.session.set_expiry(0)  # Session expire à la fermeture du navigateur
+        else:
+            self.request.session.set_expiry(3600 * 24 * 30)  # 30 jours
+        response = super().form_valid(form)
+        messages.success(self.request, f"Bienvenue, {self.request.user.username} !")
+        return response
 
     def get_success_url(self):
-        if self.request.user.is_authenticated and self.request.user.is_superuser:
-            return self.success_url
-        else:
-            return reverse_lazy('login')
-    
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+        if self.request.user.is_superuser:
+            return reverse_lazy('contact_list')
+        return reverse_lazy('show_entreprise')
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Nom d'utilisateur ou mot de passe incorrect.")
+        return super().form_invalid(form)
+
 def logOut(request):
     from django.contrib.auth import logout
     logout(request)
-    return redirect('login')
+    messages.info(request, "Vous avez été déconnecté.")
+    return redirect('show_entreprise')

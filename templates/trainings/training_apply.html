@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}S'inscrire - {{ training.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-bg: #ffffff;
+        --secondary-bg: #f5f5f5;
+        --card-bg: #ffffff;
+        --accent-color: #ff6b00;
+        --accent-hover: #ff8c3a;
+        --text-primary: #1a1a1a;
+        --text-secondary: #555555;
+        --glass-effect: rgba(0, 0, 0, 0.08);
+    }
+
+    body { background-color: var(--secondary-bg); color: var(--text-primary); }
+
+    .apply-container {
+        padding: 4rem 2rem;
+        max-width: 700px;
+        margin: 0 auto;
+        min-height: 100vh;
+    }
+
+    .apply-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--glass-effect);
+    }
+
+    .apply-card h1 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(45deg, var(--accent-color), #ff9a3d);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .apply-card .subtitle {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--glass-effect);
+    }
+
+    .form-group { margin-bottom: 1.5rem; }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: var(--secondary-bg);
+        border: 1px solid var(--glass-effect);
+        border-radius: 10px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--accent-color);
+    }
+
+    textarea.form-control { resize: vertical; }
+
+    .errorlist {
+        list-style: none; padding: 0; margin: 0.3rem 0 0;
+        color: #ff4d4d; font-size: 0.85rem;
+    }
+
+    .btn-submit {
+        background: var(--accent-color);
+        color: #000;
+        font-weight: 700;
+        border: none;
+        padding: 0.85rem 2rem;
+        border-radius: 50px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .btn-submit:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+        transition: color 0.3s;
+    }
+
+    .btn-back:hover { color: var(--accent-color); }
+
+    .messages { list-style: none; padding: 0; margin-bottom: 1.5rem; }
+    .messages li {
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+        background: rgba(76, 175, 80, 0.15);
+        color: #4caf50;
+        border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="apply-container">
+    <a href="{% url 'training_detail' training.pk %}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Retour à la formation
+    </a>
+    <div class="apply-card">
+        <h1>S'inscrire</h1>
+        <p class="subtitle">{{ training.title }} — {{ training.location }}</p>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}{{ field.errors }}{% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-paper-plane"></i> Envoyer mon inscription
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

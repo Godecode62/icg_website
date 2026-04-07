@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Supprimer l'offre d'emploi{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-bg: #0f0f0f;
+        --card-bg: #242424;
+        --accent-color: #ff6b00;
+        --text-primary: #ffffff;
+        --text-secondary: #d1d1d1;
+        --glass-effect: rgba(255, 255, 255, 0.05);
+    }
+    body { background-color: var(--primary-bg); color: var(--text-primary); }
+    .delete-container { padding: 4rem 2rem; max-width: 600px; margin: 0 auto; min-height: 100vh; }
+    .delete-card {
+        background: var(--card-bg); border-radius: 20px; padding: 3rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--glass-effect);
+        text-align: center;
+    }
+    .delete-card h1 { color: #ff4d4d; margin-bottom: 1.5rem; font-size: 1.5rem; }
+    .delete-card p { color: var(--text-secondary); margin-bottom: 2rem; }
+    .btn-group { display: flex; gap: 1rem; justify-content: center; }
+    .btn-danger {
+        background: #ff4d4d; color: #fff; border: none; padding: 0.75rem 1.5rem;
+        border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s;
+    }
+    .btn-danger:hover { background: #ff3333; transform: translateY(-2px); }
+    .btn-cancel {
+        background: transparent; color: var(--text-secondary); border: 1px solid var(--glass-effect);
+        padding: 0.75rem 1.5rem; border-radius: 50px; text-decoration: none; transition: all 0.3s;
+    }
+    .btn-cancel:hover { border-color: var(--accent-color); color: var(--accent-color); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="delete-container">
+    <div class="delete-card">
+        <h1><i class="fas fa-exclamation-triangle"></i> Confirmer la suppression</h1>
+        <p>Voulez-vous vraiment supprimer l'offre "<strong>{{ object.title }}</strong>" ?</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="btn-group">
+                <button type="submit" class="btn-danger">Supprimer</button>
+                <a href="{{ job_detail_url }}" class="btn-cancel">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

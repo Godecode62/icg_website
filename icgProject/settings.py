@@ -122,6 +122,10 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'show_entreprise'
+LOGOUT_REDIRECT_URL = 'show_entreprise'
+
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SECURE = False

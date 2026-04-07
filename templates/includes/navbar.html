@@ -57,10 +57,13 @@
         <div class="navbar-links">
             <a href="{% url 'about' %}" class="nav-link">Accueil</a>
             <a href="{% url 'event_list' %}" class="nav-link">Événements</a>
+            <a href="{% url 'job_list' %}" class="nav-link">Emplois</a>
+            <a href="{% url 'training_list' %}" class="nav-link">Formations</a>
             <a href="{% url 'contact' %}" class="nav-link">Contact</a>
             {% if request.user.is_authenticated and request.user.is_superuser %}
                 <a href="{% url 'contact_list' %}" class="nav-link">Gérer les messages</a>
-                <a href="{% url 'event_list' %}" class="nav-link">Gérer Les Événements</a>
+                <a href="{% url 'job_application_list' %}" class="nav-link">Candidatures emploi</a>
+                <a href="{% url 'training_application_list' %}" class="nav-link">Inscriptions formation</a>
                 <a href="{% url 'logout' %}" class="nav-link">Déconnexion</a>
             {% else %}
                 <a href="{% url 'login' %}" class="nav-link">Connexion</a>

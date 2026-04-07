@@ -8,8 +8,8 @@
 <style>
 
     body {
-        background-color: #121212; 
-        color: #eee; 
+        background-color: #f5f5f5; 
+        color: #1a1a1a; 
     }
 
     .contact-hero {
@@ -32,6 +32,7 @@
     .contact-hero h1 {
         font-size: 3em;
         margin-bottom: 10px;
+        color: #ffffff;
     }
 
     .contact-hero .orange-text {
@@ -42,11 +43,12 @@
         font-size: 1.2em;
         max-width: 800px;
         margin: 0 auto;
+        color: #ffffff;
     }
 
     .contact-page-section {
         padding: 40px 0;
-        background-color: #1e1e1e;
+        background-color: #f5f5f5;
     }
 
     .contact-page-section .container {
@@ -62,16 +64,16 @@
     }
 
     .contact-form {
-        background-color: #2c2c2c;
+        background-color: #ffffff;
         padding: 30px;
         border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
     }
 
     .contact-form .section-title {
         margin-bottom: 20px;
         font-size: 2em;
-        color: #f9a825;
+        color: #ff6b00;
     }
 
     .contact-form .form-group {
@@ -82,7 +84,7 @@
         display: block;
         margin-bottom: 5px;
         font-weight: bold;
-        color: #eee;
+        color: #1a1a1a;
     }
 
     .contact-form input[type="text"],
@@ -92,12 +94,19 @@
     .contact-form textarea {
         width: 100%;
         padding: 12px;
-        border: 1px solid #666;
+        border: 1px solid #ddd;
         border-radius: 4px;
         box-sizing: border-box;
         font-size: 16px;
-        color: #ccc;
-        background-color: #333;
+        color: #1a1a1a;
+        background-color: #f9f9f9;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        outline: none;
+        border-color: #ff6b00;
+        box-shadow: 0 0 5px rgba(255, 107, 0, 0.2);
     }
 
     .contact-form textarea {
@@ -114,25 +123,25 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        transition: background-color 0.3s ease;
-        background-color: #f9a825;
+        transition: all 0.3s ease;
+        background-color: #ff6b00;
     }
 
     .contact-form .submit-btn:hover {
-        background-color: #d97706;
+        background-color: #ff8c3a;
     }
 
     .company-info {
-        background-color: #2c2c2c;
+        background-color: #ffffff;
         padding: 30px;
         border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
     }
 
     .company-info .section-title {
         margin-bottom: 20px;
         font-size: 2em;
-        color: #f9a825;
+        color: #ff6b00;
     }
 
     .company-info .info-card {
@@ -143,7 +152,7 @@
     }
 
     .company-info .info-icon {
-        background-color: #f9a825;
+        background-color: #ff6b00;
         color: #fff;
         width: 40px;
         height: 40px;
@@ -155,30 +164,29 @@
     }
 
     .company-info .info-content h3 {
-        color: #f9a825;
+        color: #ff6b00;
         margin-top: 0;
         margin-bottom: 5px;
         font-size: 1.3em;
     }
 
     .company-info .info-content p a {
-        color: #f9a825;
+        color: #ff6b00;
         text-decoration: none;
     }
     .company-info .info-content p a:hover {
         text-decoration: underline;
     }
 
-    /* Styles spécifiques pour les liens mailto et tel */
     .company-info .info-content p a[href^="mailto:"],
     .company-info .info-content p a[href^="tel:"] {
-        color: inherit;
+        color: #555555;
         text-decoration: none;
     }
     
     .company-info .info-content p a[href^="mailto:"]:hover,
     .company-info .info-content p a[href^="tel:"]:hover {
-        color: #f9a825;
+        color: #ff6b00;
         text-decoration: underline;
     }
 
