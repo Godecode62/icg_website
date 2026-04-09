@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "admin/base_admin.html" %}
 {% load static %}
 
 {% block title %}Inscription de {{ application.full_name }}{% endblock %}
@@ -41,7 +41,7 @@
 </style>
 {% endblock %}
 
-{% block content %}
+{% block admin_content %}
 <div class="detail-container">
     <a href="{% url 'training_application_list' %}" class="btn-back">
         <i class="fas fa-arrow-left"></i> Retour aux inscriptions

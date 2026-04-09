@@ -9,6 +9,7 @@ from appli.views import (
     EventUpdateView,
     EventDeleteView,
     about,
+    admin_dashboard,
     CustomLogin,
     logOut
 )
@@ -21,6 +22,9 @@ urlpatterns = [
     path('', about, name='show_entreprise'),
     path('about', about, name='about'),
     path('contact', contact_views.ContactCreateView.as_view(), name='contact'),
+
+    # Tableau de bord admin
+    path('admin/dashboard', admin_dashboard, name='admin_dashboard'),
     
     # Événements - partie publique
     path('show_event', EventListView.as_view(), name='event_list'),

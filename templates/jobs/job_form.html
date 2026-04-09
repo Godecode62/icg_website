@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "admin/base_admin.html" %}
 {% load static %}
 
 {% block title %}{% if object %}Modifier{% else %}Créer{% endif %} une offre d'emploi{% endblock %}
@@ -88,7 +88,7 @@
 </style>
 {% endblock %}
 
-{% block content %}
+{% block admin_content %}
 <div class="form-container">
     <div class="form-card">
         <h1>{% if object %}Modifier{% else %}Créer{% endif %} une offre d'emploi</h1>

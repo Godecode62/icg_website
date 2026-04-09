@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "admin/base_admin.html" %}
 {% load static %}
 
 {% block extra_head %}
@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{% static 'css/events.css' %}">
 {% endblock %}
 
-{% block content %}
+{% block admin_content %}
 <div class="hse-form-container">
     <div class="hse-hero" style="background-image: url('{% static 'images/event-default.jpg' %}');">
         <div class="hse-hero-content">

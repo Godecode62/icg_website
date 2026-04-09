@@ -56,6 +56,7 @@ class JobOfferCreateView(AdminRequiredMixin, CreateView):
     form_class = JobOfferForm
     template_name = 'jobs/job_form.html'
     success_url = reverse_lazy('job_list')
+    extra_context = {'active_page': 'jobs'}
 
     def form_valid(self, form):
         messages.success(self.request, "Offre d'emploi créée avec succès !")
@@ -67,6 +68,7 @@ class JobOfferUpdateView(AdminRequiredMixin, UpdateView):
     form_class = JobOfferForm
     template_name = 'jobs/job_form.html'
     success_url = reverse_lazy('job_list')
+    extra_context = {'active_page': 'jobs'}
 
     def form_valid(self, form):
         messages.success(self.request, "Offre d'emploi mise à jour avec succès !")
@@ -77,6 +79,7 @@ class JobOfferDeleteView(AdminRequiredMixin, DeleteView):
     model = JobOffer
     template_name = 'jobs/job_confirm_delete.html'
     success_url = reverse_lazy('job_list')
+    extra_context = {'active_page': 'jobs'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -88,6 +91,7 @@ class JobApplicationListView(AdminRequiredMixin, ListView):
     model = Application
     template_name = 'jobs/application_list.html'
     context_object_name = 'applications'
+    extra_context = {'active_page': 'job_applications'}
 
     def get_queryset(self):
         return Application.objects.filter(application_type='job').select_related('job_offer')
@@ -97,3 +101,4 @@ class JobApplicationDetailView(AdminRequiredMixin, DetailView):
     model = Application
     template_name = 'jobs/application_detail.html'
     context_object_name = 'application'
+    extra_context = {'active_page': 'job_applications'}

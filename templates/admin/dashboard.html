@@ -1,0 +1,263 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Tableau de bord - ICG Admin{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
+
+{% block extra_style %}
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border-left: 4px solid var(--accent);
+        transition: transform 0.2s;
+    }
+
+    .stat-card:hover { transform: translateY(-3px); }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        color: #fff;
+    }
+
+    .stat-icon.orange { background: linear-gradient(135deg, #ff6b00, #ff9a3d); }
+    .stat-icon.blue { background: linear-gradient(135deg, #2196f3, #64b5f6); }
+    .stat-icon.green { background: linear-gradient(135deg, #4caf50, #81c784); }
+    .stat-icon.purple { background: linear-gradient(135deg, #9c27b0, #ce93d8); }
+    .stat-icon.red { background: linear-gradient(135deg, #f44336, #ef9a9a); }
+
+    .stat-info h3 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--text-dark);
+    }
+
+    .stat-info p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 1rem 1.25rem;
+        background: var(--card-bg);
+        border-radius: 10px;
+        text-decoration: none;
+        color: var(--text-dark);
+        font-weight: 600;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transition: all 0.2s;
+        border: 1px solid var(--border-color);
+    }
+
+    .action-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255,107,0,0.15);
+    }
+
+    .action-btn i {
+        font-size: 1.1rem;
+        color: var(--accent);
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-dark);
+    }
+
+    .recent-table {
+        width: 100%;
+        background: var(--card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .recent-table table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .recent-table th {
+        background: #f8f9fa;
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .recent-table td {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .recent-table tr:last-child td { border-bottom: none; }
+
+    .badge-type {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .badge-job { background: #fff3e0; color: #e65100; }
+    .badge-training { background: #e8f5e9; color: #2e7d32; }
+
+    .tables-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .tables-grid { grid-template-columns: 1fr; }
+    }
+{% endblock %}
+
+{% block admin_content %}
+<!-- Stats -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon orange"><i class="fas fa-briefcase"></i></div>
+        <div class="stat-info">
+            <h3>{{ job_count }}</h3>
+            <p>Offres d'emploi actives</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="fas fa-graduation-cap"></i></div>
+        <div class="stat-info">
+            <h3>{{ training_count }}</h3>
+            <p>Formations actives</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><i class="fas fa-file-alt"></i></div>
+        <div class="stat-info">
+            <h3>{{ job_app_count }}</h3>
+            <p>Candidatures emploi</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon purple"><i class="fas fa-user-graduate"></i></div>
+        <div class="stat-info">
+            <h3>{{ training_app_count }}</h3>
+            <p>Inscriptions formation</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon red"><i class="fas fa-envelope"></i></div>
+        <div class="stat-info">
+            <h3>{{ contact_count }}</h3>
+            <p>Messages reçus</p>
+        </div>
+    </div>
+</div>
+
+<!-- Actions rapides -->
+<h2 class="section-title">Actions rapides</h2>
+<div class="quick-actions">
+    <a href="{% url 'job_create' %}" class="action-btn">
+        <i class="fas fa-plus-circle"></i> Nouvelle offre d'emploi
+    </a>
+    <a href="{% url 'training_create' %}" class="action-btn">
+        <i class="fas fa-plus-circle"></i> Nouvelle formation
+    </a>
+    <a href="{% url 'event_create' %}" class="action-btn">
+        <i class="fas fa-plus-circle"></i> Nouvel événement
+    </a>
+    <a href="{% url 'contact_list' %}" class="action-btn">
+        <i class="fas fa-envelope-open-text"></i> Voir les messages
+    </a>
+</div>
+
+<!-- Tables récentes -->
+<div class="tables-grid">
+    <div>
+        <h2 class="section-title">Dernières candidatures emploi</h2>
+        <div class="recent-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Candidat</th>
+                        <th>Poste</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in recent_job_apps %}
+                    <tr>
+                        <td><a href="{% url 'job_application_detail' app.pk %}" style="color: var(--accent); text-decoration: none;">{{ app.full_name }}</a></td>
+                        <td>{{ app.job_offer.title|truncatewords:5 }}</td>
+                        <td>{{ app.submitted_at|date:"d/m/Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" style="text-align:center; color: var(--text-muted);">Aucune candidature</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div>
+        <h2 class="section-title">Dernières inscriptions formation</h2>
+        <div class="recent-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Candidat</th>
+                        <th>Formation</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in recent_training_apps %}
+                    <tr>
+                        <td><a href="{% url 'training_application_detail' app.pk %}" style="color: var(--accent); text-decoration: none;">{{ app.full_name }}</a></td>
+                        <td>{{ app.training.title|truncatewords:5 }}</td>
+                        <td>{{ app.submitted_at|date:"d/m/Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" style="text-align:center; color: var(--text-muted);">Aucune inscription</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

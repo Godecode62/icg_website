@@ -29,19 +29,22 @@ class ContactListView(AdminRequiredMixin, ListView):
     model = Contacts
     template_name = 'contacts/contact_list.html'
     context_object_name = 'contacts'
-    ordering = ['-received_at']  # Du plus récent au plus ancien
+    ordering = ['-received_at']
+    extra_context = {'active_page': 'contacts'}
 
 class ContactDetailView(AdminRequiredMixin, DetailView):
     """Détail d'un contact - réservé aux admins"""
     model = Contacts
     template_name = 'contacts/contact_detail.html'
     context_object_name = 'contact'
+    extra_context = {'active_page': 'contacts'}
     
 class ContactDeleteView(AdminRequiredMixin, DeleteView):
     """Suppression d'un contact - réservé aux admins"""
     model = Contacts
     template_name = 'contacts/contact_confirm_delete.html'
     success_url = reverse_lazy('contact_list')
+    extra_context = {'active_page': 'contacts'}
     
     def form_valid(self, form):
         messages.success(self.request, "Contact supprimé avec succès !")

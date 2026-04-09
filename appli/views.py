@@ -7,19 +7,23 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 
 from django.views.decorators.csrf import requires_csrf_token
-from appli.models import Events
-from appli.forms import EventForm # <-- NOUVEAU : Importe ton formulaire
+from appli.models import Events, JobOffer, Training, Application, Contacts
+from appli.forms import EventForm
 from django.contrib.auth.views import LoginView, LogoutView
 
 
 # Mixin personnalisé pour vérifier les droits admin
-class AdminRequiredMixin(UserPassesTestMixin):
+class AdminRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    login_url = 'login'
+
     def test_func(self):
-        return self.request.user.is_superuser and self.request.user.is_authenticated
+        return self.request.user.is_superuser
     
     def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            return super().handle_no_permission()
         messages.error(self.request, "Accès réservé aux administrateurs")
-        return redirect('show_entreprise') 
+        return redirect('show_entreprise')
 
 # Vue Liste (publique)
 class EventListView(ListView):
@@ -35,6 +39,7 @@ class EventCreateView(AdminRequiredMixin, CreateView):
     template_name = 'events/event_form.html'
     form_class = EventForm
     success_url = reverse_lazy('event_list')
+    extra_context = {'active_page': 'events'}
 
     def form_valid(self, form):
         messages.success(self.request, "Événement créé avec succès!")
@@ -56,6 +61,7 @@ class EventUpdateView(AdminRequiredMixin, UpdateView):
     template_name = 'events/event_form.html'
     form_class = EventForm 
     success_url = reverse_lazy('event_list')
+    extra_context = {'active_page': 'events'}
 
     def form_valid(self, form):
         messages.success(self.request, "Événement mis à jour avec succès!")
@@ -65,7 +71,8 @@ class EventUpdateView(AdminRequiredMixin, UpdateView):
 class EventDeleteView(AdminRequiredMixin, DeleteView):
     model = Events
     template_name = 'events/event_confirm_delete.html'
-    success_url = reverse_lazy('event_list')  # Redirection après suppression
+    success_url = reverse_lazy('event_list')
+    extra_context = {'active_page': 'events'}  # Redirection après suppression
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -81,6 +88,21 @@ def csrf_failure(request, reason=""):
 
 def about(request):
     return render(request, 'about.html')
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_dashboard(request):
+    context = {
+        'active_page': 'dashboard',
+        'job_count': JobOffer.objects.filter(is_active=True).count(),
+        'training_count': Training.objects.filter(is_active=True).count(),
+        'job_app_count': Application.objects.filter(application_type='job').count(),
+        'training_app_count': Application.objects.filter(application_type='training').count(),
+        'contact_count': Contacts.objects.count(),
+        'recent_job_apps': Application.objects.filter(application_type='job').select_related('job_offer')[:5],
+        'recent_training_apps': Application.objects.filter(application_type='training').select_related('training')[:5],
+    }
+    return render(request, 'admin/dashboard.html', context)
 
 
 class CustomLogin(LoginView):
@@ -102,7 +124,7 @@ class CustomLogin(LoginView):
         if next_url:
             return next_url
         if self.request.user.is_superuser:
-            return reverse_lazy('contact_list')
+            return reverse_lazy('admin_dashboard')
         return reverse_lazy('show_entreprise')
 
     def form_invalid(self, form):

@@ -56,6 +56,7 @@ class TrainingCreateView(AdminRequiredMixin, CreateView):
     form_class = TrainingForm
     template_name = 'trainings/training_form.html'
     success_url = reverse_lazy('training_list')
+    extra_context = {'active_page': 'trainings'}
 
     def form_valid(self, form):
         messages.success(self.request, "Formation créée avec succès !")
@@ -67,6 +68,7 @@ class TrainingUpdateView(AdminRequiredMixin, UpdateView):
     form_class = TrainingForm
     template_name = 'trainings/training_form.html'
     success_url = reverse_lazy('training_list')
+    extra_context = {'active_page': 'trainings'}
 
     def form_valid(self, form):
         messages.success(self.request, "Formation mise à jour avec succès !")
@@ -77,6 +79,7 @@ class TrainingDeleteView(AdminRequiredMixin, DeleteView):
     model = Training
     template_name = 'trainings/training_confirm_delete.html'
     success_url = reverse_lazy('training_list')
+    extra_context = {'active_page': 'trainings'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -88,6 +91,7 @@ class TrainingApplicationListView(AdminRequiredMixin, ListView):
     model = Application
     template_name = 'trainings/application_list.html'
     context_object_name = 'applications'
+    extra_context = {'active_page': 'training_applications'}
 
     def get_queryset(self):
         return Application.objects.filter(application_type='training').select_related('training')
@@ -97,3 +101,4 @@ class TrainingApplicationDetailView(AdminRequiredMixin, DetailView):
     model = Application
     template_name = 'trainings/application_detail.html'
     context_object_name = 'application'
+    extra_context = {'active_page': 'training_applications'}

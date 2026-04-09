@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "admin/base_admin.html" %}
 {% load static %}
 
 {% block extra_css %}
@@ -73,7 +73,7 @@
 </style>
 {% endblock %}
 
-{% block content %}
+{% block admin_content %}
 <div class="delete-confirmation-container">
     <h2 class="delete-title">Confirmer la suppression</h2>
     <p class="delete-message">Êtes-vous sûr de vouloir supprimer le contact "{{ object.contact_name }}" ? Cette action est irréversible.</p>
