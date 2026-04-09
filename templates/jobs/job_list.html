@@ -112,6 +112,18 @@
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
+        margin-bottom: 0.5rem;
+        width: fit-content;
+    }
+
+    .job-ref {
+        display: inline-block;
+        background: rgba(0, 0, 0, 0.06);
+        color: var(--text-secondary);
+        padding: 0.2rem 0.7rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
         margin-bottom: 1rem;
         width: fit-content;
     }
@@ -205,6 +217,7 @@
         {% for job in jobs %}
         <div class="job-card">
             <span class="job-badge">{{ job.contract_type }}</span>
+            {% if job.reference %}<span class="job-ref">Réf: {{ job.reference }}</span>{% endif %}
             <h3>{{ job.title }}</h3>
             <p>{{ job.description|truncatewords:30 }}</p>
             <div class="job-meta">

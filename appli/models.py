@@ -35,6 +35,7 @@ class JobOffer(models.Model):
         ('Freelance', 'Freelance'),
     ]
     title = models.CharField(max_length=255, verbose_name="Titre du poste")
+    reference = models.CharField(max_length=50, verbose_name="Référence", blank=True)
     description = models.TextField(verbose_name="Description")
     requirements = models.TextField(verbose_name="Prérequis")
     location = models.CharField(max_length=255, verbose_name="Lieu")
@@ -45,6 +46,12 @@ class JobOffer(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.reference:
+            self.reference = f"ICG-JOB-{self.pk:03d}"
+            super().save(update_fields=['reference'])
 
     class Meta:
         ordering = ['-created_at']

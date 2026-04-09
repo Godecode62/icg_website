@@ -181,6 +181,7 @@
     <div class="job-detail-card">
         <div class="job-header">
             <span class="job-badge">{{ job.contract_type }}</span>
+            {% if job.reference %}<span class="job-badge" style="background: rgba(0,0,0,0.06); color: var(--text-secondary);">Réf: {{ job.reference }}</span>{% endif %}
             <h1>{{ job.title }}</h1>
             <div class="job-meta">
                 <span><i class="fas fa-map-marker-alt"></i> {{ job.location }}</span>

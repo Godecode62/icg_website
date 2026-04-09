@@ -67,9 +67,10 @@ class JobOfferForm(forms.ModelForm):
 
     class Meta:
         model = models.JobOffer
-        fields = ['title', 'description', 'requirements', 'location', 'contract_type', 'is_active', 'deadline']
+        fields = ['title', 'reference', 'description', 'requirements', 'location', 'contract_type', 'is_active', 'deadline']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Titre du poste'}),
+            'reference': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Ex: ICG-JOB-001 (auto-généré si vide)'}),
             'description': forms.Textarea(attrs={'class': 'hse-input', 'rows': 5, 'placeholder': 'Description du poste...'}),
             'requirements': forms.Textarea(attrs={'class': 'hse-input', 'rows': 4, 'placeholder': 'Compétences et prérequis...'}),
             'location': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Ex: Conakry'}),
