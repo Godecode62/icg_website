@@ -317,7 +317,7 @@
 <section class="events-container">
     <div class="page-header">
         <h1 class="page-title">Nos Événements</h1>
-        {% if request.user.is_authenticated or request.user.is_superuser %}
+        {% if request.user.is_authenticated and request.user.is_superuser %}
             <a href="{% url 'event_create' %}" class="btn btn-create">
                 <i class="fas fa-plus"></i> Créer un événement
             </a>
@@ -362,7 +362,7 @@
                         Voir détails
                     </a>
 
-                    {% if request.user.is_authenticated or request.user.is_superuser %}
+                    {% if request.user.is_authenticated and request.user.is_superuser %}
                     <div class="action-buttons">
                         <a href="{% url 'event_update' event.pk %}" class="btn btn-action btn-edit" title="Modifier">
                             <i class="fas fa-edit"></i>
