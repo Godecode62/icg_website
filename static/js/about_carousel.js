@@ -9,39 +9,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Fonctions de contrôle
 function plusSlides(n) {
-    clearTimeout(autoSlideTimeout); // Arrêter le diaporama automatique lors d'une interaction manuelle
+    clearTimeout(autoSlideTimeout);
     showSlides(slideIndex += n);
-    startAutoSlide(); // Redémarrer le diaporama automatique
+    startAutoSlide();
 }
 
 function currentSlide(n) {
-    clearTimeout(autoSlideTimeout); // Arrêter le diaporama automatique lors d'une interaction manuelle
+    clearTimeout(autoSlideTimeout);
     showSlides(slideIndex = n);
-    startAutoSlide(); // Redémarrer le diaporama automatique
+    startAutoSlide();
 }
 
 function showSlides(n) {
-    let i;
     let slides = document.getElementsByClassName("carousel-slide");
     let dots = document.getElementsByClassName("dot");
 
     if (n > slides.length) { slideIndex = 1 }
     if (n < 1) { slideIndex = slides.length }
 
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].classList.remove("active");
     }
-    for (i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active", "");
+    for (let i = 0; i < dots.length; i++) {
+        dots[i].classList.remove("active");
     }
 
-    slides[slideIndex - 1].style.display = "block";
-    dots[slideIndex - 1].className += " active";
+    slides[slideIndex - 1].classList.add("active");
+    dots[slideIndex - 1].classList.add("active");
 }
 
 // Fonction pour le diaporama automatique
 function startAutoSlide() {
     autoSlideTimeout = setTimeout(function() {
-        plusSlides(1); // Passe à la slide suivante
-    }, 15000); // Change de slide toutes les 15 secondes (5000ms)
+        plusSlides(1);
+    }, 7000);
 }

@@ -159,4 +159,26 @@ main {
         left: 50%;
         transform: translateX(-50%);
     }
+    .footer-section {
+        min-width: auto;
+        width: 100%;
+        padding: 0 10px;
+    }
+    .site-footer {
+        padding: 30px 15px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-section h3 {
+        font-size: 1.1em;
+    }
+    .footer-section p,
+    .footer-section ul li a {
+        font-size: 0.85em;
+    }
+    .social-icons a {
+        font-size: 1.3em;
+        margin: 0 8px;
+    }
 }

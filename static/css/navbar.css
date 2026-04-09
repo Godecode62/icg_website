@@ -18,8 +18,10 @@
 }
 
 /* Logo */
-.navbar-logo img {
+.navbar-logo img,
+.logo-img {
     height: 40px;
+    width: auto;
 }
 
 /* Desktop Menu */

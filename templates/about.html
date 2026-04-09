@@ -83,6 +83,26 @@
     .carousel-slide .hero-overlay .service-name-title {
         color: #f7931e !important;
     }
+    @media (max-width: 768px) {
+        .carousel-slide .hero-overlay h1 {
+            font-size: 0.9rem !important;
+            padding: 10px 15px !important;
+        }
+        .carousel-slide .hero-overlay p {
+            font-size: 0.7rem !important;
+            padding: 8px 12px !important;
+        }
+    }
+    @media (max-width: 480px) {
+        .carousel-slide .hero-overlay h1 {
+            font-size: 0.75rem !important;
+            padding: 8px 12px !important;
+        }
+        .carousel-slide .hero-overlay p {
+            font-size: 0.65rem !important;
+            padding: 6px 10px !important;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -90,7 +110,7 @@
     <section class="about-hero">
         <div class="carousel-container">
             {# Slide 1: Hygiène Sécurité et Environnement (HSE) #}
-            <div class="carousel-slide fade">
+            <div class="carousel-slide active">
                 <img src="{% static 'images/home3.png' %}" alt="Sécurité et Environnement Durable" loading="eager" fetchpriority="high">
                 <div class="hero-overlay">
                     <h1><span class="service-name-title">Hygiène, Sécurité & Environnement :</span> Votre sérénité, notre engagement !</h1>
@@ -99,7 +119,7 @@
             </div>
 
             {# Slide 2: Responsabilité Sociétale de l'Entreprise (RSE) #}
-            <div class="carousel-slide fade">
+            <div class="carousel-slide">
                 <img src="{% static 'images/home4.png' %}" alt="Engagement Sociétal et Éthique" loading="lazy">
                 <div class="hero-overlay">
                     <h1><span class="service-name-title">Responsabilité Sociétale (RSE) :</span> Agissons pour un monde meilleur !</h1>
@@ -108,7 +128,7 @@
             </div>
 
             {# Slide 3: Accompagnement et Conseil #}
-            <div class="carousel-slide fade">
+            <div class="carousel-slide">
                 <img src="{% static 'images/home5.png' %}" alt="Partenariat Stratégique et Conseil" loading="lazy">
                 <div class="hero-overlay">
                     <h1><span class="service-name-title">Accompagnement et Conseil :</span> Votre vision, notre aide pour y arriver !</h1>
@@ -215,7 +235,7 @@
                             <h3 class="orange-text">Téléphone</h3>
                             <p><a href="tel:+224620113225">+224 620 11 32 25</a></p>
                         </div>
-                    -                    </div>
+                    </div>
 
                     <div class="info-card">
                         <div class="info-icon orange-bg">

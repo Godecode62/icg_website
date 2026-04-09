@@ -1,53 +1,5 @@
 {% load static %}
 
-<style>
-.navbar {
-    background-color: #1a1a1a;
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    width: 100%;
-}
-
-.navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-.navbar-links {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-}
-
-.nav-link {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-    color: #007bff;
-}
-
-.logo-img {
-    height: 40px;
-    width: auto;
-}
-
-@media (max-width: 768px) {
-    .navbar-links {
-        display: none;
-    }
-}
-</style>
-
 <nav class="navbar">
     <div class="navbar-container">
         <a href="{% url 'show_entreprise' %}" class="navbar-logo">
@@ -62,12 +14,20 @@
             <a href="{% url 'contact' %}" class="nav-link">Contact</a>
         </div>
 
-        <button class="mobile-menu-button">
+        <button class="mobile-menu-button" aria-label="Menu">
             <div class="hamburger">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </div>
         </button>
+    </div>
+
+    <div class="mobile-menu">
+        <a href="{% url 'about' %}" class="mobile-nav-link">Accueil</a>
+        <a href="{% url 'event_list' %}" class="mobile-nav-link">Événements</a>
+        <a href="{% url 'job_list' %}" class="mobile-nav-link">Emplois</a>
+        <a href="{% url 'training_list' %}" class="mobile-nav-link">Formations</a>
+        <a href="{% url 'contact' %}" class="mobile-nav-link mobile-nav-button">Contact</a>
     </div>
 </nav>
