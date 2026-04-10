@@ -67,7 +67,7 @@ class JobOfferForm(forms.ModelForm):
 
     class Meta:
         model = models.JobOffer
-        fields = ['title', 'reference', 'description', 'requirements', 'location', 'contract_type', 'is_active', 'deadline']
+        fields = ['title', 'reference', 'description', 'requirements', 'location', 'contract_type', 'experience_required', 'education', 'salary', 'is_active', 'deadline']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Titre du poste'}),
             'reference': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Ex: ICG-JOB-001 (auto-généré si vide)'}),
@@ -75,6 +75,9 @@ class JobOfferForm(forms.ModelForm):
             'requirements': forms.Textarea(attrs={'class': 'hse-input', 'rows': 4, 'placeholder': 'Compétences et prérequis...'}),
             'location': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Ex: Conakry'}),
             'contract_type': forms.Select(attrs={'class': 'hse-input'}),
+            'experience_required': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Ex: 3 ans'}),
+            'education': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Ex: BTS/BAC+3'}),
+            'salary': forms.TextInput(attrs={'class': 'hse-input', 'placeholder': 'Ex: 500 000 GNF ou Non spécifiée'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'hse-checkbox'}),
         }
 

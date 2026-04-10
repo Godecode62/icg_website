@@ -169,9 +169,104 @@
 
     .btn-admin:hover { border-color: var(--accent-color); color: var(--accent-color); }
 
+    /* Info grid */
+    .job-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.2rem;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: var(--secondary-bg);
+        border-radius: 16px;
+        border: 1px solid var(--glass-effect);
+    }
+
+    .job-info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .job-info-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: rgba(255, 107, 0, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .job-info-icon i {
+        color: var(--accent-color);
+        font-size: 1rem;
+    }
+
+    .job-info-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .job-info-label {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    .job-info-value {
+        font-size: 0.95rem;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-top: 2px;
+    }
+
+    /* Social sharing */
+    .job-share {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--glass-effect);
+    }
+
+    .job-share-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+
+    .share-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #fff;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .share-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .share-btn.facebook { background: #1877F2; }
+    .share-btn.twitter { background: #000; }
+    .share-btn.linkedin { background: #0A66C2; }
+    .share-btn.whatsapp { background: #25D366; }
+    .share-btn.telegram { background: #229ED9; }
+
     @media (max-width: 768px) {
         .job-detail-card { padding: 1.5rem; }
         .job-header h1 { font-size: 1.5rem; }
+        .job-info-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; padding: 1rem; }
     }
 </style>
 {% endblock %}
@@ -190,6 +285,50 @@
                 <span><i class="fas fa-calendar-alt"></i> Date limite: {{ job.deadline|date:"d M Y" }}</span>
                 {% endif %}
             </div>
+        </div>
+
+        <div class="job-info-grid">
+            {% if job.experience_required %}
+            <div class="job-info-item">
+                <div class="job-info-icon"><i class="fas fa-briefcase"></i></div>
+                <div class="job-info-text">
+                    <span class="job-info-label">Expérience requise</span>
+                    <span class="job-info-value">{{ job.experience_required }}</span>
+                </div>
+            </div>
+            {% endif %}
+            {% if job.education %}
+            <div class="job-info-item">
+                <div class="job-info-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="job-info-text">
+                    <span class="job-info-label">Formation</span>
+                    <span class="job-info-value">{{ job.education }}</span>
+                </div>
+            </div>
+            {% endif %}
+            <div class="job-info-item">
+                <div class="job-info-icon"><i class="fas fa-money-bill-wave"></i></div>
+                <div class="job-info-text">
+                    <span class="job-info-label">Rémunération</span>
+                    <span class="job-info-value">{{ job.salary|default:"Non spécifiée" }}</span>
+                </div>
+            </div>
+            <div class="job-info-item">
+                <div class="job-info-icon"><i class="fas fa-calendar-plus"></i></div>
+                <div class="job-info-text">
+                    <span class="job-info-label">Date de publication</span>
+                    <span class="job-info-value">{{ job.created_at|date:"d/m/Y" }}</span>
+                </div>
+            </div>
+            {% if job.deadline %}
+            <div class="job-info-item">
+                <div class="job-info-icon"><i class="fas fa-calendar-times"></i></div>
+                <div class="job-info-text">
+                    <span class="job-info-label">Date limite</span>
+                    <span class="job-info-value">{{ job.deadline|date:"d/m/Y" }}</span>
+                </div>
+            </div>
+            {% endif %}
         </div>
 
         <div class="job-section">
@@ -213,6 +352,25 @@
                 <a href="{% url 'job_update' job.pk %}" class="btn-admin"><i class="fas fa-edit"></i> Modifier</a>
                 <a href="{% url 'job_delete' job.pk %}" class="btn-admin"><i class="fas fa-trash"></i> Supprimer</a>
             {% endif %}
+        </div>
+
+        <div class="job-share">
+            <span class="job-share-label"><i class="fas fa-share-alt"></i> Partager :</span>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer" class="share-btn facebook" title="Partager sur Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ job.title|urlencode }}" target="_blank" rel="noopener noreferrer" class="share-btn twitter" title="Partager sur X (Twitter)">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer" class="share-btn linkedin" title="Partager sur LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://api.whatsapp.com/send?text={{ job.title|urlencode }}%20{{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer" class="share-btn whatsapp" title="Partager sur WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ job.title|urlencode }}" target="_blank" rel="noopener noreferrer" class="share-btn telegram" title="Partager sur Telegram">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
         </div>
     </div>
 </div>

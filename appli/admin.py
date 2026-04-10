@@ -8,7 +8,7 @@ class EventsAdmin(admin.ModelAdmin):
 
 
 class JobOfferAdmin(admin.ModelAdmin):
-    list_display = ('title', 'location', 'contract_type', 'is_active', 'deadline', 'created_at')
+    list_display = ('title', 'location', 'contract_type', 'experience_required', 'education', 'is_active', 'deadline', 'created_at')
     list_filter = ('contract_type', 'is_active')
     search_fields = ('title', 'description')
 
