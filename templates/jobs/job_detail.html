@@ -313,13 +313,6 @@
                     <span class="job-info-value">{{ job.salary|default:"Non spécifiée" }}</span>
                 </div>
             </div>
-            <div class="job-info-item">
-                <div class="job-info-icon"><i class="fas fa-calendar-plus"></i></div>
-                <div class="job-info-text">
-                    <span class="job-info-label">Date de publication</span>
-                    <span class="job-info-value">{{ job.created_at|date:"d/m/Y" }}</span>
-                </div>
-            </div>
             {% if job.deadline %}
             <div class="job-info-item">
                 <div class="job-info-icon"><i class="fas fa-calendar-times"></i></div>
@@ -329,6 +322,13 @@
                 </div>
             </div>
             {% endif %}
+            <div class="job-info-item">
+                <div class="job-info-icon"><i class="fas fa-calendar-plus"></i></div>
+                <div class="job-info-text">
+                    <span class="job-info-label">Date de publication</span>
+                    <span class="job-info-value">{{ job.created_at|date:"d/m/Y" }}</span>
+                </div>
+            </div>
         </div>
 
         <div class="job-section">
