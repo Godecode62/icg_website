@@ -101,6 +101,9 @@ def admin_dashboard(request):
         'contact_count': Contacts.objects.count(),
         'recent_job_apps': Application.objects.filter(application_type='job').select_related('job_offer')[:5],
         'recent_training_apps': Application.objects.filter(application_type='training').select_related('training')[:5],
+        'published_jobs': JobOffer.objects.filter(is_active=True),
+        'published_trainings': Training.objects.filter(is_active=True),
+        'published_events': Events.objects.all().order_by('-event_date'),
     }
     return render(request, 'admin/dashboard.html', context)
 

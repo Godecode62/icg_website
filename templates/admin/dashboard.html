@@ -144,6 +144,59 @@
         gap: 1.5rem;
     }
 
+    .published-section {
+        margin-top: 2rem;
+    }
+
+    .action-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .action-link.edit {
+        color: #2196f3;
+        background: #e3f2fd;
+    }
+
+    .action-link.edit:hover {
+        background: #bbdefb;
+    }
+
+    .action-link.delete {
+        color: #f44336;
+        background: #ffebee;
+    }
+
+    .action-link.delete:hover {
+        background: #ffcdd2;
+    }
+
+    .action-link.view {
+        color: #4caf50;
+        background: #e8f5e9;
+    }
+
+    .action-link.view:hover {
+        background: #c8e6c9;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
     @media (max-width: 768px) {
         .tables-grid { grid-template-columns: 1fr; }
     }
@@ -258,6 +311,113 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Offres d'emploi publiées -->
+<div class="published-section">
+    <h2 class="section-title"><i class="fas fa-briefcase" style="color: var(--accent); margin-right: 8px;"></i>Offres d'emploi publiées</h2>
+    <div class="recent-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Titre</th>
+                    <th>Lieu</th>
+                    <th>Type</th>
+                    <th>Date limite</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in published_jobs %}
+                <tr>
+                    <td>{{ job.reference }}</td>
+                    <td>{{ job.title|truncatewords:6 }}</td>
+                    <td>{{ job.location }}</td>
+                    <td><span class="badge-type badge-job">{{ job.contract_type }}</span></td>
+                    <td>{{ job.deadline|date:"d/m/Y"|default:"—" }}</td>
+                    <td>
+                        <a href="{% url 'job_detail' job.pk %}" class="action-link view" title="Voir"><i class="fas fa-eye"></i></a>
+                        <a href="{% url 'job_update' job.pk %}" class="action-link edit" title="Modifier"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'job_delete' job.pk %}" class="action-link delete" title="Supprimer"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Aucune offre d'emploi publiée</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Formations publiées -->
+<div class="published-section">
+    <h2 class="section-title"><i class="fas fa-graduation-cap" style="color: #2196f3; margin-right: 8px;"></i>Formations publiées</h2>
+    <div class="recent-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Lieu</th>
+                    <th>Date début</th>
+                    <th>Date fin</th>
+                    <th>Durée</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for training in published_trainings %}
+                <tr>
+                    <td>{{ training.title|truncatewords:6 }}</td>
+                    <td>{{ training.location }}</td>
+                    <td>{{ training.start_date|date:"d/m/Y" }}</td>
+                    <td>{{ training.end_date|date:"d/m/Y"|default:"—" }}</td>
+                    <td>{{ training.duration|default:"—" }}</td>
+                    <td>
+                        <a href="{% url 'training_detail' training.pk %}" class="action-link view" title="Voir"><i class="fas fa-eye"></i></a>
+                        <a href="{% url 'training_update' training.pk %}" class="action-link edit" title="Modifier"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'training_delete' training.pk %}" class="action-link delete" title="Supprimer"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Aucune formation publiée</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Événements publiés -->
+<div class="published-section">
+    <h2 class="section-title"><i class="fas fa-calendar-alt" style="color: #9c27b0; margin-right: 8px;"></i>Événements publiés</h2>
+    <div class="recent-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Date</th>
+                    <th>Lieu</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in published_events %}
+                <tr>
+                    <td>{{ event.event_name|truncatewords:6 }}</td>
+                    <td>{{ event.event_date|date:"d/m/Y" }}</td>
+                    <td>{{ event.event_address }}</td>
+                    <td>
+                        <a href="{% url 'event_detail' event.pk %}" class="action-link view" title="Voir"><i class="fas fa-eye"></i></a>
+                        <a href="{% url 'event_update' event.pk %}" class="action-link edit" title="Modifier"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'event_delete' event.pk %}" class="action-link delete" title="Supprimer"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Aucun événement publié</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
