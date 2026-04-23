@@ -112,8 +112,8 @@ CLOUDFLARE_R2_CONFIG_OPTIONS = {
 
 STORAGES = {
     'default': {
-        'BACKEND': 'helpers.cloudflare.storages.MediaFileStorage',
-        'OPTIONS': CLOUDFLARE_R2_CONFIG_OPTIONS,
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        
     },
     'staticfiles': {
         'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
@@ -143,6 +143,7 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    CSRF_TRUSTED_ORIGINS = ['https://icguinea.com', 'https://www.icguinea.com']
 
 
 
