@@ -1,5 +1,6 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse, reverse_lazy
+from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
@@ -47,7 +48,7 @@ class JobApplyView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('job_detail', kwargs={'pk': self.job_offer.pk})
+        return reverse('show_entreprise')
 
 
 # ---- Partie admin ----
