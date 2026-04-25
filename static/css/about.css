@@ -397,6 +397,82 @@ body {
     color: var(--dark);
 }
 
+/* HR Services Section */
+.hr-services-section {
+    padding: 80px 0;
+    background-color: #f5f5f5;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.hr-services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.hr-card {
+    background-color: var(--card-bg);
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.hr-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 35px rgba(247, 147, 30, 0.2);
+    border-color: var(--orange);
+}
+
+.hr-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--orange), #ff9e1b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 2.2rem;
+    transition: transform 0.3s ease;
+}
+
+.hr-card:hover .hr-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.hr-card h3 {
+    font-size: 1.3rem;
+    color: var(--text-lighter);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.hr-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-light);
+    flex-grow: 1;
+}
+
+/* Light background */
+.light-bg {
+    background-color: #f5f5f5;
+}
 
 /* Media Queries pour la Responsivité */
 @media (max-width: 992px) {
@@ -459,6 +535,12 @@ body {
         max-width: 100%;
     }
 
+    /* HR Services Grid - Responsive */
+    .hr-services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+
     .hero-buttons {
         flex-direction: column;
         gap: 15px;
@@ -505,5 +587,21 @@ body {
     }
     .full-width-section .container {
         padding: 0 10px;
+    }
+
+    /* HR Services Grid - Mobile */
+    .hr-services-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .hr-card {
+        padding: 25px;
+    }
+
+    .hr-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
     }
 }

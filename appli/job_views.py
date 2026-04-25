@@ -2,7 +2,6 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
-from django.contrib import messages
 
 from appli.models import JobOffer, Application
 from appli.forms import JobOfferForm, JobApplicationForm
@@ -33,7 +32,7 @@ class JobApplyView(CreateView):
     template_name = 'jobs/job_apply.html'
 
     def dispatch(self, request, *args, **kwargs):
-        self.job_offer = get_object_or_404(JobOffer, pk=self.kwargs["pk"])
+        self.job_offer = get_object_or_404(JobOffer, pk=self.kwargs['pk'])
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):

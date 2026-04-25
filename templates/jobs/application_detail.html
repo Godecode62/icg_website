@@ -71,6 +71,12 @@
             <div class="info-value">{{ application.phone }}</div>
         </div>
         {% endif %}
+        {% if application.address %}
+        <div class="info-row">
+            <div class="info-label">Adresse</div>
+            <div class="info-value">{{ application.address }}</div>
+        </div>
+        {% endif %}
         <div class="info-row">
             <div class="info-label">Lettre de motivation</div>
             <div class="info-value">{{ application.cover_letter|default:"Non fournie" }}</div>
@@ -79,8 +85,18 @@
         <div class="info-row">
             <div class="info-label">CV</div>
             <div class="info-value">
-                <a href="{{ application.resume.url }}" class="btn-download" target="_blank">
+                <a href="{{ application.resume.url }}" class="btn-download" target="_blank" rel="noopener" download>
                     <i class="fas fa-download"></i> Télécharger le CV
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        {% if application.other_document %}
+        <div class="info-row">
+            <div class="info-label">Autre document</div>
+            <div class="info-value">
+                <a href="{{ application.other_document.url }}" class="btn-download" target="_blank" rel="noopener" download>
+                    <i class="fas fa-download"></i> Télécharger le document
                 </a>
             </div>
         </div>
