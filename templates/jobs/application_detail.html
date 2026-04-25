@@ -85,7 +85,7 @@
         <div class="info-row">
             <div class="info-label">CV</div>
             <div class="info-value">
-                <a href="{{ application.resume.url }}" class="btn-download" target="_blank" rel="noopener" download>
+                <a href="{% url 'job_application_resume_download' application.pk %}" class="btn-download">
                     <i class="fas fa-download"></i> Télécharger le CV
                 </a>
             </div>
@@ -95,7 +95,7 @@
         <div class="info-row">
             <div class="info-label">Autre document</div>
             <div class="info-value">
-                <a href="{{ application.other_document.url }}" class="btn-download" target="_blank" rel="noopener" download>
+                <a href="{% url 'job_application_other_document_download' application.pk %}" class="btn-download">
                     <i class="fas fa-download"></i> Télécharger le document
                 </a>
             </div>

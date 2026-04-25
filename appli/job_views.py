@@ -1,7 +1,9 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+import os
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, View
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
+from django.http import FileResponse, Http404
 
 from appli.models import JobOffer, Application
 from appli.forms import JobOfferForm, JobApplicationForm
@@ -103,3 +105,21 @@ class JobApplicationDetailView(AdminRequiredMixin, DetailView):
     template_name = 'jobs/application_detail.html'
     context_object_name = 'application'
     extra_context = {'active_page': 'job_applications'}
+
+
+class JobApplicationFileDownloadView(AdminRequiredMixin, View):
+    """Sert le CV ou un autre document via Django, sans dépendre de MEDIA_URL."""
+
+    field_name = None  # 'resume' ou 'other_document'
+
+    def get(self, request, pk):
+        application = get_object_or_404(Application, pk=pk)
+        file_field = getattr(application, self.field_name, None)
+        if not file_field:
+            raise Http404("Fichier non trouvé.")
+        try:
+            file_handle = file_field.open('rb')
+        except (FileNotFoundError, OSError):
+            raise Http404("Fichier introuvable sur le serveur.")
+        filename = os.path.basename(file_field.name)
+        return FileResponse(file_handle, as_attachment=True, filename=filename)

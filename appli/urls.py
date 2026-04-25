@@ -51,6 +51,8 @@ urlpatterns = [
     path('emploi/<int:pk>/supprimer', job_views.JobOfferDeleteView.as_view(), name='job_delete'),
     path('candidatures/emploi', job_views.JobApplicationListView.as_view(), name='job_application_list'),
     path('candidature/emploi/<int:pk>', job_views.JobApplicationDetailView.as_view(), name='job_application_detail'),
+    path('candidature/emploi/<int:pk>/cv', job_views.JobApplicationFileDownloadView.as_view(field_name='resume'), name='job_application_resume_download'),
+    path('candidature/emploi/<int:pk>/document', job_views.JobApplicationFileDownloadView.as_view(field_name='other_document'), name='job_application_other_document_download'),
 
     # Formations - partie publique
     path('formations', training_views.TrainingListView.as_view(), name='training_list'),
