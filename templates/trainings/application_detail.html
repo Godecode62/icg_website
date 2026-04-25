@@ -63,6 +63,12 @@
             <div class="info-value">{{ application.phone }}</div>
         </div>
         {% endif %}
+        {% if application.address %}
+        <div class="info-row">
+            <div class="info-label">Adresse</div>
+            <div class="info-value">{{ application.address }}</div>
+        </div>
+        {% endif %}
         <div class="info-row">
             <div class="info-label">Motivation</div>
             <div class="info-value">{{ application.cover_letter|default:"Non fournie" }}</div>

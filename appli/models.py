@@ -93,8 +93,10 @@ class Application(models.Model):
     full_name = models.CharField(max_length=255, verbose_name="Nom complet")
     email = models.EmailField(verbose_name="Email")
     phone = PhoneNumberField(verbose_name="Téléphone", null=True, blank=True)
+    address = models.CharField(max_length=500, verbose_name="Adresse", blank=True)
     cover_letter = models.TextField(verbose_name="Lettre de motivation", blank=True)
     resume = models.FileField(upload_to="resumes/", verbose_name="CV", blank=True)
+    other_document = models.FileField(upload_to="other_documents/", verbose_name="Autre document", blank=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

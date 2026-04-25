@@ -118,23 +118,34 @@ class TrainingForm(forms.ModelForm):
 class JobApplicationForm(forms.ModelForm):
     class Meta:
         model = models.Application
-        fields = ['full_name', 'email', 'phone', 'cover_letter', 'resume']
+        fields = ['full_name', 'email', 'phone', 'address', 'cover_letter', 'resume', 'other_document']
         widgets = {
             'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Votre nom complet'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'votre@email.com'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+224 XXX XX XX XX'}),
+            'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: Quartier Kipé, Conakry'}),
             'cover_letter': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Votre lettre de motivation...'}),
-            'resume': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            'resume': forms.ClearableFileInput(attrs={'class': 'form-control-file', 'accept': '.pdf,.doc,.docx'}),
+            'other_document': forms.ClearableFileInput(attrs={'class': 'form-control-file', 'accept': '.pdf,.doc,.docx,.jpg,.jpeg,.png'}),
+        }
+        labels = {
+            'address': 'Adresse',
+            'resume': 'CV (PDF, DOC, DOCX)',
+            'other_document': 'Autre document (optionnel)',
         }
 
 
 class TrainingApplicationForm(forms.ModelForm):
     class Meta:
         model = models.Application
-        fields = ['full_name', 'email', 'phone', 'cover_letter']
+        fields = ['full_name', 'email', 'phone', 'address', 'cover_letter']
         widgets = {
             'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Votre nom complet'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'votre@email.com'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+224 XXX XX XX XX'}),
+            'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: Quartier Kipé, Conakry'}),
             'cover_letter': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Votre motivation pour cette formation...'}),
+        }
+        labels = {
+            'address': 'Adresse',
         }
